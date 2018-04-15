@@ -72,7 +72,6 @@ public class DisplayController
             model.addAttribute("data", false);
         }
         model.addAttribute("title", "Current Leaderboard");
-        model.addAttribute("content", "leaderboard");
         model.addAttribute("entityType", "leaderboard");
         model.addAttribute("entityView", "leaderboard");
         return "layout";
