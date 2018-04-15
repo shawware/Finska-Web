@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Leader Board</title>
+</head>
+<body>
+
+<div th:fragment="leaderboard">
+  <table th:if="${data}" class="table table-bordered table-striped">
+    <thead class="thead-dark">
+      <tr>
+        <th class="text-center">Rank</th>
+        <th>Player</th>
+        <th:block th:each="itemName : ${spec.itemNames}">
+        <th class="text-center" th:text="${itemName}">Name</th>
+        </th:block>
+      </tr>
+    </thead>
+    <tbody>
+      <tr th:each="result : ${leaderboard}">
+        <td class="text-center" th:text="${result.rank}"></td>
+        <td th:text="${players.get(result.entrantID).name}"></td>
+        <th:block th:each="itemName : ${spec.itemNames}">
+        <td class="text-center" 
+            th:text="${spec.isInteger(itemName) ? result.getResultItemValueAsInt(itemName) : #numbers.formatDecimal(result.getResultItemValueAsDouble(itemName), 1, 2)}">Value</td>
+        </th:block>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+</body>
+</html>
