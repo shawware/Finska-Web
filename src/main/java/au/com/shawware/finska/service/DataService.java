@@ -7,6 +7,9 @@
 
 package au.com.shawware.finska.service;
 
+import javax.annotation.PostConstruct;
+
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import au.com.shawware.finska.persistence.CompetitionLoader;
@@ -21,16 +24,24 @@ import au.com.shawware.finska.scoring.ScoringSystem;
 @Service
 public class DataService
 {
+    /** Where to get the data from. */
+    @Value("${au.com.shawware.finska.datadir}")
+    private String mDataDir;
+
     /** The wrapped results service. */
-    private final ResultsService mResultsService;
+    private ResultsService mResultsService;
 
     /**
      * Constructs a new service.
      */
     public DataService()
     {
-        // TODO: inject the configuration into this service via the environment.
-        PersistenceFactory factory = PersistenceFactory.getFactory("data");
+    }
+
+    @PostConstruct
+    private void initialise()
+    {
+        PersistenceFactory factory = PersistenceFactory.getFactory(mDataDir);
         CompetitionLoader loader = CompetitionLoader.getLoader(factory);
         ScoringSystem scoringSystem = new ScoringSystem(3, 1, 1, 1, 0);
         mResultsService = new ResultsService(loader, scoringSystem);
