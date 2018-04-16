@@ -9,6 +9,8 @@ package au.com.shawware.finska.webapp;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 
 /**
  * The Finska web application.
@@ -16,8 +18,14 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @author <a href="mailto:david.shaw@shawware.com.au">David Shaw</a>
  */
 @SpringBootApplication(scanBasePackages="au.com.shawware.finska")
-public class FinskaWebApp
+public class FinskaWebApp extends SpringBootServletInitializer
 {
+    @Override
+    protected SpringApplicationBuilder configure(SpringApplicationBuilder builder)
+    {
+        return builder.sources(FinskaWebApp.class);
+    }
+
     /**
      * The starting point.
      * 
