@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import au.com.shawware.compadmin.scoring.EntrantResult;
+import au.com.shawware.finska.entity.Competition;
 import au.com.shawware.finska.entity.Player;
 import au.com.shawware.finska.service.DataService;
 
@@ -74,6 +75,38 @@ public class DisplayController
         model.addAttribute("title", "Current Leaderboard");
         model.addAttribute("entityType", "leaderboard");
         model.addAttribute("entityView", "leaderboard");
+        return "layout";
+    }
+
+    /**
+     * Displays the list of matches and running totals.
+     * 
+     * @param model the model to add data to
+     * 
+     * @return The template name.
+     */
+    @GetMapping({"/matches"})
+    public String matches(Model model)
+    {
+        Competition competition = mDataService.getResultsService().getCompetition();
+        if (competition != null)
+        {
+            model.addAttribute("data", true);
+            List<List<EntrantResult>> matchesResults = mDataService.getResultsService().getRoundResults();
+            EntrantResult first = matchesResults.get(0).get(0);
+            model.addAttribute("spec", first.getResultSpecification());
+            model.addAttribute("players", mDataService.getResultsService().getPlayers());
+            model.addAttribute("competition", competition);
+            model.addAttribute("matches", mDataService.getResultsService().getMatches());
+            model.addAttribute("results", matchesResults);
+        }
+        else
+        {
+            model.addAttribute("data", false);
+        }
+        model.addAttribute("title", "Match Results");
+        model.addAttribute("entityType", "match");
+        model.addAttribute("entityView", "matches");
         return "layout";
     }
 
