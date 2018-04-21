@@ -12,7 +12,9 @@ import javax.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import au.com.shawware.finska.persistence.CompetitionLoader;
+import au.com.shawware.finska.persistence.EntityLoader;
+import au.com.shawware.finska.persistence.IEntityLoader;
+import au.com.shawware.finska.persistence.PersistenceException;
 import au.com.shawware.finska.persistence.PersistenceFactory;
 import au.com.shawware.finska.scoring.ScoringSystem;
 
@@ -40,11 +42,13 @@ public class DataService
 
     @PostConstruct
     private void initialise()
+        throws PersistenceException
     {
         PersistenceFactory factory = PersistenceFactory.getFactory(mDataDir);
-        CompetitionLoader loader = CompetitionLoader.getLoader(factory);
+        IEntityLoader loader = EntityLoader.getLoader(factory);
         ScoringSystem scoringSystem = new ScoringSystem(3, 1, 1, 1, 0);
         mResultsService = new ResultsService(loader, scoringSystem);
+        mResultsService.initialise();
     }
 
     /**
