@@ -31,9 +31,19 @@ import au.com.shawware.finska.service.DataService;
  */
 @Controller
 @RequestMapping("/display")
+@SuppressWarnings({ "nls", "boxing" })
 public class DisplayController
 {
     private static Logger LOG = LoggerFactory.getLogger(DisplayController.class);
+
+    /** The name of the template to use for all views. */
+    private static final String TEMPLATE = "layout";
+    /** The name of attribute that identifies the fragment file. */
+    private static final String FRAGMENT_FILE_KEY = "entityType";
+    /** The name of attribute that identifies the fragment. */
+    private static final String FRAGMENT_NAME_KEY = "entityView";
+    /** The name of attribute that identifies the view. */
+    private static final String VIEW_NAME = "title";
 
     /** The injected data service. */
     @Autowired
@@ -72,10 +82,10 @@ public class DisplayController
         {
             model.addAttribute("data", false);
         }
-        model.addAttribute("title", "Current Leaderboard");
-        model.addAttribute("entityType", "leaderboard");
-        model.addAttribute("entityView", "leaderboard");
-        return "layout";
+        model.addAttribute(VIEW_NAME, "Current Leaderboard");
+        model.addAttribute(FRAGMENT_FILE_KEY, "leaderboard");
+        model.addAttribute(FRAGMENT_NAME_KEY, "leaderboard");
+        return TEMPLATE;
     }
 
     /**
@@ -104,10 +114,10 @@ public class DisplayController
         {
             model.addAttribute("data", false);
         }
-        model.addAttribute("title", "Match Results");
-        model.addAttribute("entityType", "match");
-        model.addAttribute("entityView", "matches");
-        return "layout";
+        model.addAttribute(VIEW_NAME, "Match Results");
+        model.addAttribute(FRAGMENT_FILE_KEY, "match");
+        model.addAttribute(FRAGMENT_NAME_KEY, "matches");
+        return TEMPLATE;
     }
 
     /**
@@ -121,11 +131,11 @@ public class DisplayController
     public String players(Model model)
     {
         Map<Integer, Player> players = mDataService.getResultsService().getPlayers();
-        model.addAttribute("title", "Players");
+        model.addAttribute(VIEW_NAME, "Players");
         model.addAttribute("players", players);
-        model.addAttribute("entityType", "player");
-        model.addAttribute("entityView", "players");
-        return "layout";
+        model.addAttribute(FRAGMENT_FILE_KEY, "player");
+        model.addAttribute(FRAGMENT_NAME_KEY, "players");
+        return TEMPLATE;
     }
 
     /**
@@ -140,10 +150,10 @@ public class DisplayController
     public String player(@PathVariable("id") int id, Model model)
     {
         Player player = mDataService.getResultsService().getPlayer(id);
-        model.addAttribute("title", "Player " + id);
+        model.addAttribute(VIEW_NAME, "Player " + id);
         model.addAttribute("player", player);
-        model.addAttribute("entityType", "player");
-        model.addAttribute("entityView", "player");
-        return "layout";
+        model.addAttribute(FRAGMENT_FILE_KEY, "player");
+        model.addAttribute(FRAGMENT_NAME_KEY, "player");
+        return TEMPLATE;
     }
 }
