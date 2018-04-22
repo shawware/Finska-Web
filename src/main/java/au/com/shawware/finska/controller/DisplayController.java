@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import au.com.shawware.compadmin.scoring.EntrantResult;
-import au.com.shawware.finska.entity.Competition;
+import au.com.shawware.finska.entity.FinskaCompetition;
 import au.com.shawware.finska.entity.Player;
 import au.com.shawware.finska.service.DataService;
 
@@ -89,34 +89,34 @@ public class DisplayController
     }
 
     /**
-     * Displays the list of matches and running totals.
+     * Displays the list of rounds and running totals.
      * 
      * @param model the model to add data to
      * 
      * @return The template name.
      */
-    @GetMapping({"/matches"})
-    public String matches(Model model)
+    @GetMapping({"/rounds"})
+    public String rounds(Model model)
     {
-        Competition competition = mDataService.getResultsService().getCompetition();
+        FinskaCompetition competition = mDataService.getResultsService().getCompetition();
         if (competition != null)
         {
             model.addAttribute("data", true);
-            List<List<EntrantResult>> matchesResults = mDataService.getResultsService().getRoundResults();
-            EntrantResult first = matchesResults.get(0).get(0);
+            List<List<EntrantResult>> roundResults = mDataService.getResultsService().getRoundResults();
+            EntrantResult first = roundResults.get(0).get(0);
             model.addAttribute("spec", first.getResultSpecification());
             model.addAttribute("players", mDataService.getResultsService().getPlayers());
             model.addAttribute("competition", competition);
-            model.addAttribute("matches", mDataService.getResultsService().getMatches());
-            model.addAttribute("results", matchesResults);
+            model.addAttribute("rounds", mDataService.getResultsService().getRounds());
+            model.addAttribute("results", roundResults);
         }
         else
         {
             model.addAttribute("data", false);
         }
-        model.addAttribute(VIEW_NAME, "Match Results");
-        model.addAttribute(FRAGMENT_FILE_KEY, "match");
-        model.addAttribute(FRAGMENT_NAME_KEY, "matches");
+        model.addAttribute(VIEW_NAME, "Round Summaries");
+        model.addAttribute(FRAGMENT_FILE_KEY, "round");
+        model.addAttribute(FRAGMENT_NAME_KEY, "rounds");
         return TEMPLATE;
     }
 

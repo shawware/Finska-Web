@@ -5,11 +5,11 @@
 </head>
 <body>
 
-<div th:fragment="matches">
+<div th:fragment="rounds">
   <th:block th:if="${results.size() > 0}">
     <h1 th:text="${competition.name}">Name</h1>
-    <th:block th:each="i: ${#numbers.sequence(matches.size() - 1, 0, -1)}">
-      <h2 th:text="${'Round: ' + matches.get(i).round + ' (' + matches.get(i).matchDate + ')'}"></h2>
+    <th:block th:each="i: ${#numbers.sequence(rounds.size() - 1, 0, -1)}">
+      <h2 th:text="${'Round: ' + rounds.get(i).number + ' (' + rounds.get(i).roundDate + ')'}"></h2>
       <table class="table table-bordered table-striped">
         <thead class="thead-dark">
           <tr>
