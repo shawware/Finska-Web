@@ -18,7 +18,11 @@
     </thead>
     <tbody>
       <tr th:each="result : ${leaderboard}">
-        <td class="text-center" th:text="${result.rank}"></td>
+        <td class="text-center">
+          <span th:text="${result.rank}"></span>
+          <img th:with="image=(${(result.rankDelta == 0) ? 'dash' : ((result.rankDelta > 0) ? 'chevron-up' : 'chevron-down')})" 
+               th:src="@{'/svg/' + ${image} + '.svg'}">
+        </td>
         <td th:text="${players.get(result.entrantID).name}"></td>
         <th:block th:each="itemName : ${spec.itemNames}">
         <td class="text-center" 
