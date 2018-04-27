@@ -10,8 +10,6 @@ package au.com.shawware.finska.controller;
 import java.util.List;
 import java.util.Map;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -34,8 +32,6 @@ import au.com.shawware.finska.service.DataService;
 @SuppressWarnings({ "nls", "boxing" })
 public class DisplayController
 {
-    private static Logger LOG = LoggerFactory.getLogger(DisplayController.class);
-
     /** The name of the template to use for all views. */
     private static final String TEMPLATE = "layout";
     /** The name of attribute that identifies the fragment file. */
@@ -70,6 +66,37 @@ public class DisplayController
     public String leaderBoard(Model model)
     {
         List<EntrantResult> leaderboard = mDataService.getResultsService().getLeaderBoard();
+        model.addAttribute(VIEW_NAME, "Current Leaderboard");
+        processLeaderBoard(leaderboard, model);
+        return TEMPLATE;
+    }
+
+
+    /**
+     * Displays the leader board and player data for the given number of rounds.
+     * 
+     * @param round the number of rounds
+     * @param model the model to add data to
+     * 
+     * @return The template name.
+     */
+    @GetMapping("/table/{round}")
+    public String leaderBoard(@PathVariable("round") int round, Model model)
+    {
+        List<EntrantResult> leaderboard = mDataService.getResultsService().getLeaderBoard(round);
+        model.addAttribute(VIEW_NAME, "Leaderboard After Round " + round);
+        processLeaderBoard(leaderboard, model);
+        return TEMPLATE;
+    }
+
+    /**
+     * Processes the given leader board and adds the relevant data to the model.
+     *
+     * @param leaderboard the leader board to process
+     * @param model the model to add to 
+     */
+    private void processLeaderBoard(List<EntrantResult> leaderboard, Model model)
+    {
         if (!leaderboard.isEmpty())
         {
             model.addAttribute("data", true);
@@ -82,10 +109,8 @@ public class DisplayController
         {
             model.addAttribute("data", false);
         }
-        model.addAttribute(VIEW_NAME, "Current Leaderboard");
         model.addAttribute(FRAGMENT_FILE_KEY, "leaderboard");
         model.addAttribute(FRAGMENT_NAME_KEY, "leaderboard");
-        return TEMPLATE;
     }
 
     /**
