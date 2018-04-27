@@ -20,8 +20,10 @@
       <tr th:each="result : ${leaderboard}">
         <td class="text-center">
           <span th:text="${result.rank}"></span>
-          <img th:with="image=(${(result.rankDelta == 0) ? 'none' : ((result.rankDelta > 0) ? 'up' : 'down')})" 
-               th:src="@{'/images/png/move-' + ${image} + '.png'}">
+          <img th:if="${result.previousRank != 0}"
+               th:with="image=(${(result.rankDelta == 0) ? 'none' : ((result.rankDelta > 0) ? 'up' : 'down')})" 
+               th:src="@{'/images/png/move-' + ${image} + '.png'}"
+               th:title="${'Previous rank: ' + result.previousRank}">
         </td>
         <td th:text="${players.get(result.entrantID).name}"></td>
         <th:block th:each="itemName : ${spec.itemNames}">
