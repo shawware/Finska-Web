@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 
-import au.com.shawware.finska.persistence.PersistenceException;
+import au.com.shawware.util.persistence.PersistenceException;
 
 /**
  * Exception handler for REST controllers.

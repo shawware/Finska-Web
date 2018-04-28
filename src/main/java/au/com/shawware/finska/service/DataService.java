@@ -14,9 +14,9 @@ import org.springframework.stereotype.Service;
 
 import au.com.shawware.finska.persistence.EntityLoader;
 import au.com.shawware.finska.persistence.IEntityLoader;
-import au.com.shawware.finska.persistence.PersistenceException;
-import au.com.shawware.finska.persistence.PersistenceFactory;
 import au.com.shawware.finska.scoring.ScoringSystem;
+import au.com.shawware.util.persistence.PersistenceException;
+import au.com.shawware.util.persistence.PersistenceFactory;
 
 /**
  * Makes data available in this web application.
