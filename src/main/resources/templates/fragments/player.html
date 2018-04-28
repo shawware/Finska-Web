@@ -16,7 +16,7 @@
     <tbody>
       <tr th:each="player : ${players}">
         <td th:text="${player.value.id}"></td>
-        <td th:text="${player.value.name}"></td>
+        <td th:text="${player.value.key}"></td>
       </tr>
     </tbody>
   </table>
@@ -33,7 +33,7 @@
     <tbody>
       <tr>
         <td th:text="${player.id}"></td>
-        <td th:text="${player.name}"></td>
+        <td th:text="${player.key}"></td>
       </tr>
     </tbody>
   </table>

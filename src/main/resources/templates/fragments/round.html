@@ -7,9 +7,9 @@
 
 <div th:fragment="rounds">
   <th:block th:if="${results.size() > 0}">
-    <h1 th:text="${competition.name}">Name</h1>
+    <h1 th:text="${competition.key}">Name</h1>
     <th:block th:each="i: ${#numbers.sequence(rounds.size() - 1, 0, -1)}">
-      <h2 th:text="${'Round: ' + rounds.get(i).number + ' (' + rounds.get(i).roundDate + ')'}"></h2>
+      <h2 th:text="${'Round: ' + rounds.get(i).key + ' (' + rounds.get(i).roundDate + ')'}"></h2>
       <table class="table table-bordered table-striped">
         <thead class="thead-dark">
           <tr>
@@ -21,7 +21,7 @@
         </thead>
         <tbody>
           <tr th:each="result : ${results.get(i)}">
-            <td th:text="${players.get(result.entrantID).name}"></td>
+            <td th:text="${players.get(result.entrantID).key}"></td>
             <th:block th:each="itemName : ${spec.itemNames}">
             <td class="text-center" 
                 th:text="${spec.isInteger(itemName) ? result.getResultItemValueAsInt(itemName) : #numbers.formatDecimal(result.getResultItemValueAsDouble(itemName), 1, 2)}">Value</td>

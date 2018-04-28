@@ -25,7 +25,7 @@
                th:src="@{'/images/png/move-' + ${image} + '.png'}"
                th:title="${'Previous rank: ' + result.previousRank}">
         </td>
-        <td th:text="${players.get(result.entrantID).name}"></td>
+        <td th:text="${players.get(result.entrantID).key}"></td>
         <th:block th:each="itemName : ${spec.itemNames}">
         <td class="text-center" 
             th:text="${spec.isInteger(itemName) ? result.getResultItemValueAsInt(itemName) : #numbers.formatDecimal(result.getResultItemValueAsDouble(itemName), 1, 2)}">Value</td>
