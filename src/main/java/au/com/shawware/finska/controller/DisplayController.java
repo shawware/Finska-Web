@@ -21,6 +21,7 @@ import au.com.shawware.compadmin.scoring.EntrantResult;
 import au.com.shawware.finska.entity.FinskaCompetition;
 import au.com.shawware.finska.entity.Player;
 import au.com.shawware.finska.service.DataService;
+import au.com.shawware.finska.service.ResultsService;
 
 /**
  * Displays competition data.
@@ -44,6 +45,8 @@ public class DisplayController
     /** The injected data service. */
     @Autowired
     private final DataService mDataService;
+    /** The derived result service. */
+    private final ResultsService mResultsService;
 
     /**
      * Constructs a new controller.
@@ -52,7 +55,8 @@ public class DisplayController
      */
     public DisplayController(DataService dataService)
     {
-        mDataService = dataService;
+        mDataService    = dataService;
+        mResultsService = mDataService.getResultsService();
     }
 
     /**
@@ -65,12 +69,11 @@ public class DisplayController
     @GetMapping({"", "/", "/table"})
     public String leaderBoard(Model model)
     {
-        List<EntrantResult> leaderboard = mDataService.getResultsService().getLeaderBoard();
+        List<EntrantResult> leaderboard = mResultsService.getLeaderBoard();
         model.addAttribute(VIEW_NAME, "Current Leaderboard");
         processLeaderBoard(leaderboard, model);
         return TEMPLATE;
     }
-
 
     /**
      * Displays the leader board and player data for the given number of rounds.
@@ -83,7 +86,7 @@ public class DisplayController
     @GetMapping("/table/{round}")
     public String leaderBoard(@PathVariable("round") int round, Model model)
     {
-        List<EntrantResult> leaderboard = mDataService.getResultsService().getLeaderBoard(round);
+        List<EntrantResult> leaderboard = mResultsService.getLeaderBoard(round);
         model.addAttribute(VIEW_NAME, "Leaderboard After Round " + round);
         processLeaderBoard(leaderboard, model);
         return TEMPLATE;
@@ -102,7 +105,7 @@ public class DisplayController
             model.addAttribute("data", true);
             EntrantResult first = leaderboard.get(0);
             model.addAttribute("spec", first.getResultSpecification());
-            model.addAttribute("players", mDataService.getResultsService().getPlayers());
+            model.addAttribute("players", mResultsService.getPlayers());
             model.addAttribute("leaderboard", leaderboard);
         }
         else
@@ -123,16 +126,16 @@ public class DisplayController
     @GetMapping({"/rounds"})
     public String rounds(Model model)
     {
-        FinskaCompetition competition = mDataService.getResultsService().getCompetition();
+        FinskaCompetition competition = mResultsService.getCompetition();
         if (competition != null)
         {
             model.addAttribute("data", true);
-            List<List<EntrantResult>> roundResults = mDataService.getResultsService().getRoundResults();
+            List<List<EntrantResult>> roundResults = mResultsService.getRoundResults();
             EntrantResult first = roundResults.get(0).get(0);
             model.addAttribute("spec", first.getResultSpecification());
-            model.addAttribute("players", mDataService.getResultsService().getPlayers());
+            model.addAttribute("players", mResultsService.getPlayers());
             model.addAttribute("competition", competition);
-            model.addAttribute("rounds", mDataService.getResultsService().getRounds());
+            model.addAttribute("rounds", mResultsService.getRounds());
             model.addAttribute("results", roundResults);
         }
         else
@@ -155,7 +158,7 @@ public class DisplayController
     @GetMapping("/players")
     public String players(Model model)
     {
-        Map<Integer, Player> players = mDataService.getResultsService().getPlayers();
+        Map<Integer, Player> players = mResultsService.getPlayers();
         model.addAttribute(VIEW_NAME, "Players");
         model.addAttribute("players", players);
         model.addAttribute(FRAGMENT_FILE_KEY, "player");
@@ -174,11 +177,31 @@ public class DisplayController
     @GetMapping("/player/{id}")
     public String player(@PathVariable("id") int id, Model model)
     {
-        Player player = mDataService.getResultsService().getPlayer(id);
+        Player player = mResultsService.getPlayer(id);
         model.addAttribute(VIEW_NAME, "Player " + id);
         model.addAttribute("player", player);
         model.addAttribute(FRAGMENT_FILE_KEY, "player");
         model.addAttribute(FRAGMENT_NAME_KEY, "player");
+        return TEMPLATE;
+    }
+
+    /**
+     * Displays the current competition.
+     * 
+     * @param model the model to add data to
+     * 
+     * @return The template name.
+     */
+    @GetMapping({"/competition"})
+    public String competition(Model model)
+    {
+        FinskaCompetition competition = mResultsService.getCompetition();
+        model.addAttribute(VIEW_NAME, "Current Competition: " + competition.getKey());
+        model.addAttribute("competition", competition);
+        model.addAttribute("rounds", mResultsService.getRounds());
+        model.addAttribute("players", mResultsService.getPlayers());
+        model.addAttribute(FRAGMENT_FILE_KEY, "competition");
+        model.addAttribute(FRAGMENT_NAME_KEY, "competition");
         return TEMPLATE;
     }
 }

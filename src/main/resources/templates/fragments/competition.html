@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Current Competition</title>
+</head>
+<body>
+
+<div th:fragment="competition">
+  <table th:if="${competition.numberOfRounds() > 0}" class="table table-bordered table-striped">
+    <thead class="thead-dark">
+      <tr>
+        <th>Round</th>
+        <th>Date</th>
+        <th>#Matches</th>
+        <th>Players</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr th:each="round : ${rounds}">
+        <td th:text="${round.key}"></td>
+        <td th:text="${round.roundDate}"></td>
+        <td th:text="${round.numberOfMatches()}"></td>
+        <td>
+          <th:block th:each="player, status : ${round.players}">
+            <a th:href="@{/display/player/{id}(id=${player.id})}"
+               th:title="${player.key}"
+               th:text="${player.key}">Name</a><th:block th:if="!${status.last}">,</th:block>
+          </th:block>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+</body>
+</html>
