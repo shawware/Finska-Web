@@ -10,7 +10,6 @@ package au.com.shawware.finska.controller;
 import java.util.List;
 import java.util.Map;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,7 +20,6 @@ import au.com.shawware.compadmin.scoring.EntrantResult;
 import au.com.shawware.finska.entity.FinskaCompetition;
 import au.com.shawware.finska.entity.Player;
 import au.com.shawware.finska.service.DataService;
-import au.com.shawware.finska.service.ResultsService;
 
 /**
  * Displays competition data.
@@ -31,23 +29,8 @@ import au.com.shawware.finska.service.ResultsService;
 @Controller
 @RequestMapping("/display")
 @SuppressWarnings({ "nls", "boxing" })
-public class DisplayController
+public class DisplayController extends AbstractController
 {
-    /** The name of the template to use for all views. */
-    private static final String TEMPLATE = "layout";
-    /** The name of attribute that identifies the fragment file. */
-    private static final String FRAGMENT_FILE_KEY = "entityType";
-    /** The name of attribute that identifies the fragment. */
-    private static final String FRAGMENT_NAME_KEY = "entityView";
-    /** The name of attribute that identifies the view. */
-    private static final String VIEW_NAME = "title";
-
-    /** The injected data service. */
-    @Autowired
-    private final DataService mDataService;
-    /** The derived result service. */
-    private final ResultsService mResultsService;
-
     /**
      * Constructs a new controller.
      * 
@@ -55,8 +38,7 @@ public class DisplayController
      */
     public DisplayController(DataService dataService)
     {
-        mDataService    = dataService;
-        mResultsService = mDataService.getResultsService();
+        super(dataService);
     }
 
     /**

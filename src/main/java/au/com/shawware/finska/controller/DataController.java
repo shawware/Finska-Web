@@ -11,7 +11,6 @@ import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,13 +26,9 @@ import au.com.shawware.finska.service.DataService;
  */
 @RestController
 @RequestMapping("/data")
-public class DataController
+public class DataController extends AbstractController
 {
     private static Logger LOG = LoggerFactory.getLogger(DataController.class);
-
-    /** The injected data service. */
-    @Autowired
-    private final DataService mDataService;
 
     /**
      * Constructs a new controller.
@@ -42,7 +37,7 @@ public class DataController
      */
     public DataController(DataService dataService)
     {
-        mDataService = dataService;
+        super(dataService);
     }
 
     /**
@@ -53,7 +48,7 @@ public class DataController
     @GetMapping("/players")
     public Map<Integer, Player> players()
     {
-        Map<Integer, Player> players = mDataService.getResultsService().getPlayers();
+        Map<Integer, Player> players = mResultsService.getPlayers();
         LOG.debug("Players retrieved: " + players.size()); //$NON-NLS-1$
         return players;
     }
@@ -69,7 +64,7 @@ public class DataController
     @GetMapping("/player/{id}")
     public Player player(@PathVariable("id") int id)
     {
-        Player player = mDataService.getResultsService().getPlayer(id);
+        Player player = mResultsService.getPlayer(id);
         LOG.debug("Player retrieved: " + player); //$NON-NLS-1$
         return player;
     }
