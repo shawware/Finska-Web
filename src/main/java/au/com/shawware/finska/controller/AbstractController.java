@@ -29,6 +29,24 @@ public abstract class AbstractController
     /** The name of attribute that identifies the view. */
     protected static final String VIEW_NAME = "title";
 
+    /** The name of the attribute / file key that is used for a single competition. */
+    protected static final String COMPETITION = "competition";
+    /** The name of the attribute / file key that is used for a leader board. */
+    protected static final String LEADERBOARD = "leaderboard";
+    /** The name of the attribute that is used for players. */
+    protected static final String PLAYERS = "players";
+    /** The name of the attribute / file key that is used for a single player. */
+    protected static final String PLAYER = "player";
+    /** The name of the attribute that is used for rounds. */
+    protected static final String ROUNDS = "rounds";
+    /** The name of the attribute / file key that is used for a single round. */
+    protected static final String ROUND = "round";
+
+    /** The key used for the display operation. */
+    protected static final String DISPLAY = "display";
+    /** The key used for the edit operation. */
+    protected static final String EDIT = "edit";
+
     /** The injected data service. */
     @Autowired
     private final DataService mDataService;

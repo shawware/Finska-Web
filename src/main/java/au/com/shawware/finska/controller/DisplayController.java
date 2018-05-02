@@ -60,16 +60,16 @@ public class DisplayController extends AbstractController
     /**
      * Displays the leader board and player data for the given number of rounds.
      * 
-     * @param round the number of rounds
+     * @param number the number of rounds
      * @param model the model to add data to
      * 
      * @return The template name.
      */
-    @GetMapping("/table/{round}")
-    public String leaderBoard(@PathVariable("round") int round, Model model)
+    @GetMapping("/table/{number}")
+    public String leaderBoard(@PathVariable("number") int number, Model model)
     {
-        List<EntrantResult> leaderboard = mResultsService.getLeaderBoard(round);
-        model.addAttribute(VIEW_NAME, "Leaderboard After Round " + round);
+        List<EntrantResult> leaderboard = mResultsService.getLeaderBoard(number);
+        model.addAttribute(VIEW_NAME, "Leaderboard After Round " + number);
         processLeaderBoard(leaderboard, model);
         return TEMPLATE;
     }
@@ -87,15 +87,15 @@ public class DisplayController extends AbstractController
             model.addAttribute("data", true);
             EntrantResult first = leaderboard.get(0);
             model.addAttribute("spec", first.getResultSpecification());
-            model.addAttribute("players", mResultsService.getPlayers());
-            model.addAttribute("leaderboard", leaderboard);
+            model.addAttribute(PLAYERS, mResultsService.getPlayers());
+            model.addAttribute(LEADERBOARD, leaderboard);
         }
         else
         {
             model.addAttribute("data", false);
         }
-        model.addAttribute(FRAGMENT_FILE_KEY, "leaderboard");
-        model.addAttribute(FRAGMENT_NAME_KEY, "leaderboard");
+        model.addAttribute(FRAGMENT_FILE_KEY, LEADERBOARD);
+        model.addAttribute(FRAGMENT_NAME_KEY, LEADERBOARD);
     }
 
     /**
@@ -105,7 +105,7 @@ public class DisplayController extends AbstractController
      * 
      * @return The template name.
      */
-    @GetMapping({"/rounds"})
+    @GetMapping("/rounds")
     public String rounds(Model model)
     {
         FinskaCompetition competition = mResultsService.getCompetition();
@@ -115,9 +115,9 @@ public class DisplayController extends AbstractController
             List<List<EntrantResult>> roundResults = mResultsService.getRoundResults();
             EntrantResult first = roundResults.get(0).get(0);
             model.addAttribute("spec", first.getResultSpecification());
-            model.addAttribute("players", mResultsService.getPlayers());
-            model.addAttribute("competition", competition);
-            model.addAttribute("rounds", mResultsService.getRounds());
+            model.addAttribute(PLAYERS, mResultsService.getPlayers());
+            model.addAttribute(COMPETITION, competition);
+            model.addAttribute(ROUNDS, mResultsService.getRounds());
             model.addAttribute("results", roundResults);
         }
         else
@@ -125,8 +125,8 @@ public class DisplayController extends AbstractController
             model.addAttribute("data", false);
         }
         model.addAttribute(VIEW_NAME, "Round Summaries");
-        model.addAttribute(FRAGMENT_FILE_KEY, "round");
-        model.addAttribute(FRAGMENT_NAME_KEY, "rounds");
+        model.addAttribute(FRAGMENT_FILE_KEY, ROUND);
+        model.addAttribute(FRAGMENT_NAME_KEY, ROUNDS);
         return TEMPLATE;
     }
 
@@ -142,9 +142,9 @@ public class DisplayController extends AbstractController
     {
         Map<Integer, Player> players = mResultsService.getPlayers();
         model.addAttribute(VIEW_NAME, "Players");
-        model.addAttribute("players", players);
-        model.addAttribute(FRAGMENT_FILE_KEY, "player");
-        model.addAttribute(FRAGMENT_NAME_KEY, "players");
+        model.addAttribute(PLAYERS, players);
+        model.addAttribute(FRAGMENT_FILE_KEY, PLAYER);
+        model.addAttribute(FRAGMENT_NAME_KEY, PLAYERS);
         return TEMPLATE;
     }
 
@@ -161,9 +161,9 @@ public class DisplayController extends AbstractController
     {
         Player player = mResultsService.getPlayer(id);
         model.addAttribute(VIEW_NAME, "Player " + id);
-        model.addAttribute("player", player);
-        model.addAttribute(FRAGMENT_FILE_KEY, "player");
-        model.addAttribute(FRAGMENT_NAME_KEY, "player");
+        model.addAttribute(PLAYER, player);
+        model.addAttribute(FRAGMENT_FILE_KEY, PLAYER);
+        model.addAttribute(FRAGMENT_NAME_KEY, PLAYER);
         return TEMPLATE;
     }
 
@@ -174,16 +174,34 @@ public class DisplayController extends AbstractController
      * 
      * @return The template name.
      */
-    @GetMapping({"/competition"})
+    @GetMapping("/competition")
     public String competition(Model model)
     {
         FinskaCompetition competition = mResultsService.getCompetition();
         model.addAttribute(VIEW_NAME, "Current Competition: " + competition.getKey());
-        model.addAttribute("competition", competition);
-        model.addAttribute("rounds", mResultsService.getRounds());
-        model.addAttribute("players", mResultsService.getPlayers());
-        model.addAttribute(FRAGMENT_FILE_KEY, "competition");
-        model.addAttribute(FRAGMENT_NAME_KEY, "competition");
+        model.addAttribute(COMPETITION, competition);
+        model.addAttribute(ROUNDS, mResultsService.getRounds());
+        model.addAttribute(PLAYERS, mResultsService.getPlayers());
+        model.addAttribute(FRAGMENT_FILE_KEY, COMPETITION);
+        model.addAttribute(FRAGMENT_NAME_KEY, COMPETITION);
+        return TEMPLATE;
+    }
+
+    /**
+     * Displays the specified round.
+     * 
+     * @param number the round's number
+     * @param model the model to add data to
+     * 
+     * @return The template name.
+     */
+    @GetMapping("/round/{number}")
+    public String round(@PathVariable("number") int number, Model model)
+    {
+        model.addAttribute(VIEW_NAME, "Round " + number);
+        model.addAttribute(ROUND, mResultsService.getRound(number));
+        model.addAttribute(FRAGMENT_FILE_KEY, ROUND);
+        model.addAttribute(FRAGMENT_NAME_KEY, DISPLAY);
         return TEMPLATE;
     }
 }

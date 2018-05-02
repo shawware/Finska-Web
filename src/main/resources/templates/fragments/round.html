@@ -32,5 +32,27 @@
   </th:block>
 </div>
 
+<div th:fragment="display">
+  <table class="table table-bordered table-striped">
+    <thead class="thead-dark">
+      <tr>
+        <th>Player</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr th:each="player : ${round.players}">
+        <td th:text="${player.key}"></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div th:fragment="edit">
+  <form method="post" th:action="@{/admin/update/round/{number}(number=${round.key})}">
+    <input type="hidden" th:value="${round.key}" name="round.number" />
+    <button type="submit" th:text="Submit" th:value="update"></button>
+  </form>
+</div>
+
 </body>
 </html>
