@@ -38,6 +38,7 @@ public class DataService
      */
     public DataService()
     {
+        // Nothing to do
     }
 
     @PostConstruct
@@ -48,6 +49,17 @@ public class DataService
         IEntityLoader loader = EntityLoader.getLoader(factory);
         ScoringSystem scoringSystem = new ScoringSystem(3, 1, 1, 1, 0);
         mResultsService = new ResultsService(loader, scoringSystem);
+        mResultsService.initialise();
+    }
+
+    /**
+     * Reloads the data into this data service.
+     * 
+     * @throws PersistenceException error reloading
+     */
+    public void reload()
+        throws PersistenceException
+    {
         mResultsService.initialise();
     }
 

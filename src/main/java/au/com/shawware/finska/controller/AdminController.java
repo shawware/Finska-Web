@@ -18,9 +18,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
 
 import au.com.shawware.finska.entity.FinskaCompetition;
 import au.com.shawware.finska.service.DataService;
+import au.com.shawware.util.persistence.PersistenceException;
 
 /**
  * Administers the competition data.
@@ -29,7 +31,7 @@ import au.com.shawware.finska.service.DataService;
  */
 @Controller
 @RequestMapping("/admin")
-@SuppressWarnings({ "nls", "boxing" })
+@SuppressWarnings({ "nls", "static-method" })
 public class AdminController extends AbstractController
 {
     /**
@@ -40,6 +42,22 @@ public class AdminController extends AbstractController
     public AdminController(DataService dataService)
     {
         super(dataService);
+    }
+
+    /**
+     * Re-loads the data from disk. Useful when results are
+     * updated outside of the system.
+     * 
+     * @return The model/view to redirect to.
+     * 
+     * @throws PersistenceException error reloading
+     */
+    @GetMapping("/reload")
+    public ModelAndView reload()
+        throws PersistenceException
+    {
+        mDataService.reload();
+        return new ModelAndView("redirect:/");
     }
 
     /**

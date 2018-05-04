@@ -49,7 +49,7 @@ public abstract class AbstractController
 
     /** The injected data service. */
     @Autowired
-    private final DataService mDataService;
+    protected final DataService mDataService;
     /** The derived result service. */
     protected final ResultsService mResultsService;
 
