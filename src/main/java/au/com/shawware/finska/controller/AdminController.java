@@ -8,6 +8,9 @@
 package au.com.shawware.finska.controller;
 
 import java.util.Enumeration;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -21,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import au.com.shawware.finska.entity.FinskaCompetition;
+import au.com.shawware.finska.entity.FinskaRound;
 import au.com.shawware.finska.service.DataService;
 import au.com.shawware.util.persistence.PersistenceException;
 
@@ -72,11 +76,14 @@ public class AdminController extends AbstractController
     public String editRound(@PathVariable("number") int number, Model model)
     {
         FinskaCompetition competition = mResultsService.getCompetition();
+        FinskaRound round = mResultsService.getRound(number);
+        Set<Integer> ids = round.getPlayerIds();
         model.addAttribute(VIEW_NAME, competition.getKey() + ": Round " + number);
         model.addAttribute(FRAGMENT_FILE_KEY, ROUND);
         model.addAttribute(FRAGMENT_NAME_KEY, EDIT);
         model.addAttribute(COMPETITION, competition);
-        model.addAttribute(ROUND, mResultsService.getRound(number));
+        model.addAttribute(ROUND, round);
+        model.addAttribute("checked", ids);
         model.addAttribute(PLAYERS, mResultsService.getPlayers());
         return TEMPLATE;
     }
@@ -85,23 +92,23 @@ public class AdminController extends AbstractController
      * Updated the nominated round with the submitted data.
      * 
      * @param number the round number
+     * @param players the players selected for this round
      * @param model the model to add data to
      * 
      * @return The template name.
      */
     @PostMapping("/update/round/{number}")
     public String updateRound(@PathVariable("number") int number,
-        @RequestParam("round.number") int roundNumber,
+        @RequestParam("players") int[] players,
         HttpServletRequest request, Model model)
     {
         FinskaCompetition competition = mResultsService.getCompetition();
-        Enumeration<String> names = request.getAttributeNames();
-        Object value = request.getAttribute("round.number");
+        FinskaRound round = mResultsService.getRound(number);
         model.addAttribute(VIEW_NAME, competition.getKey() + ": Round " + number);
         model.addAttribute(FRAGMENT_FILE_KEY, ROUND);
         model.addAttribute(FRAGMENT_NAME_KEY, DISPLAY);
         model.addAttribute(COMPETITION, competition);
-        model.addAttribute(ROUND, mResultsService.getRound(number));
+        model.addAttribute(ROUND, round);
         model.addAttribute(PLAYERS, mResultsService.getPlayers());
         return TEMPLATE;
     }

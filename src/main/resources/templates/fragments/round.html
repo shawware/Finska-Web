@@ -49,8 +49,14 @@
 
 <div th:fragment="edit">
   <form method="post" th:action="@{/admin/update/round/{number}(number=${round.key})}">
-    <input type="hidden" th:value="${round.key}" name="round.number" />
-    <button type="submit" th:text="Submit" th:value="update"></button>
+    <div class="form-group">
+      <label for="players">Players</label>
+      <div th:each="player : ${players}" class="form-check form-check-inline">
+        <input type="checkbox" class="form-check-input" name="players"
+          th:checked="${checked.contains(player.value.id)}" th:value="${player.value.id}" th:text="${player.value.key}">
+      </div>
+    </div>
+    <button type="submit" class="btn btn-primary" th:text="Submit" th:value="update"></button>
   </form>
 </div>
 
