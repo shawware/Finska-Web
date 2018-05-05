@@ -64,6 +64,56 @@ public class AdminController extends AbstractController
     }
 
     /**
+     * Displays a template for creating a new round.
+     * 
+     * @param model the model to add data to
+     * 
+     * @return The template name.
+     */
+    @GetMapping("/create/round")
+    public String newRound(Model model)
+    {
+        FinskaCompetition competition = mResultsService.getCompetition();
+        model.addAttribute(VIEW_NAME, competition.getKey() + ": Create New Round");
+        model.addAttribute(FRAGMENT_FILE_KEY, ROUND);
+        model.addAttribute(FRAGMENT_NAME_KEY, CREATE);
+        model.addAttribute(COMPETITION, competition);
+        model.addAttribute(PLAYERS, mResultsService.getPlayers());
+        model.addAttribute("date", LocalDate.now());
+        return TEMPLATE;
+    }
+
+    /**
+     * Creates a new round.
+     * 
+     * @param competitionID the competition ID
+     * @param roundDate the new round's date
+     * @param playerIDs the IDs of the players participating in this round
+     * @param model the model to add data to
+     * 
+     * @return The template name.
+     * 
+     * @throws PersistenceException error creating round
+     */
+    @PostMapping("/create/round")
+    public String createRound(
+        @RequestParam("competition") int competitionID,
+        @RequestParam("round-date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate roundDate,
+        @RequestParam("players") int[] playerIDs, Model model)
+        throws PersistenceException
+    {
+        FinskaCompetition competition = mResultsService.getCompetition();
+        FinskaRound round = mCreateService.createRound(competitionID, roundDate, playerIDs);
+        model.addAttribute(VIEW_NAME, competition.getKey() + ": Round " + round.getKey());
+        model.addAttribute(FRAGMENT_FILE_KEY, ROUND);
+        model.addAttribute(FRAGMENT_NAME_KEY, DISPLAY);
+        model.addAttribute(ROUND, round);
+        model.addAttribute(COMPETITION, competition);
+        model.addAttribute(PLAYERS, mResultsService.getPlayers());
+        return TEMPLATE;
+    }
+
+    /**
      * Displays the nominated round so that it can be edited.
      * 
      * @param number the round number

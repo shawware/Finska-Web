@@ -12,8 +12,8 @@ import javax.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import au.com.shawware.finska.persistence.EntityLoader;
-import au.com.shawware.finska.persistence.IEntityLoader;
+import au.com.shawware.finska.persistence.EntityRepository;
+import au.com.shawware.finska.persistence.IEntityRepository;
 import au.com.shawware.finska.scoring.ScoringSystem;
 import au.com.shawware.util.persistence.PersistenceException;
 import au.com.shawware.util.persistence.PersistenceFactory;
@@ -32,6 +32,8 @@ public class DataService
 
     /** The wrapped results service. */
     private ResultsService mResultsService;
+    /** The wrapped create service. */
+    private CreateService mCreateService;
 
     /**
      * Constructs a new service.
@@ -46,10 +48,11 @@ public class DataService
         throws PersistenceException
     {
         PersistenceFactory factory = PersistenceFactory.getFactory(mDataDir);
-        IEntityLoader loader = EntityLoader.getLoader(factory);
+        IEntityRepository repository = EntityRepository.getRepository(factory);
         ScoringSystem scoringSystem = new ScoringSystem(3, 1, 1, 1, 0);
-        mResultsService = new ResultsService(loader, scoringSystem);
+        mResultsService = new ResultsService(repository, scoringSystem);
         mResultsService.initialise();
+        mCreateService = new CreateService(repository);
     }
 
     /**
@@ -69,5 +72,13 @@ public class DataService
     public ResultsService getResultsService()
     {
         return mResultsService;
+    }
+
+    /**
+     * @return The create service.
+     */
+    public CreateService getCreateService()
+    {
+        return mCreateService;
     }
 }

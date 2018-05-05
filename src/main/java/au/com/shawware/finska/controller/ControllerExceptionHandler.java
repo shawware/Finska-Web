@@ -7,6 +7,8 @@
 
 package au.com.shawware.finska.controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -24,6 +26,8 @@ import au.com.shawware.util.persistence.PersistenceException;
 @SuppressWarnings("static-method")
 public class ControllerExceptionHandler
 {
+    private static final Logger LOG = LoggerFactory.getLogger(ControllerExceptionHandler.class);
+
     /**
      * Handles an incorrect argument error. This typically arises when
      * a URL specifies an entity that does not exist.
@@ -36,6 +40,7 @@ public class ControllerExceptionHandler
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<String> handleIncorrectArgument(IllegalArgumentException e, WebRequest request)
     {
+        LOG.error("Illegal argument exception: " + e.getMessage(), e); //$NON-NLS-1$
         return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
     }
 
@@ -50,6 +55,7 @@ public class ControllerExceptionHandler
     @ExceptionHandler(PersistenceException.class)
     public ResponseEntity<String> handlePersistenceError(PersistenceException e, WebRequest request)
     {
+        LOG.error("Persistence exception: " + e.getMessage(), e); //$NON-NLS-1$
         return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }

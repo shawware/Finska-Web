@@ -9,6 +9,7 @@ package au.com.shawware.finska.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import au.com.shawware.finska.service.CreateService;
 import au.com.shawware.finska.service.DataService;
 import au.com.shawware.finska.service.ResultsService;
 
@@ -44,6 +45,8 @@ public abstract class AbstractController
 
     /** The key used for the display operation. */
     protected static final String DISPLAY = "display";
+    /** The key used for the create operation. */
+    protected static final String CREATE = "create";
     /** The key used for the edit operation. */
     protected static final String EDIT = "edit";
 
@@ -52,6 +55,8 @@ public abstract class AbstractController
     protected final DataService mDataService;
     /** The derived result service. */
     protected final ResultsService mResultsService;
+    /** The derived result service. */
+    protected final CreateService mCreateService;
 
     /**
      * Constructs a new controller.
@@ -61,6 +66,7 @@ public abstract class AbstractController
     public AbstractController(DataService dataService)
     {
         mDataService    = dataService;
-        mResultsService = mDataService.getResultsService();
+        mResultsService = dataService.getResultsService();
+        mCreateService  = dataService.getCreateService();
     }
 }
