@@ -50,6 +50,10 @@
 <div th:fragment="edit">
   <form method="post" th:action="@{/admin/update/round/{number}(number=${round.key})}">
     <div class="form-group">
+      <label for="round-date">Date Played</label>
+      <input name="round-date" type="date" th:value="${round.roundDate.toString()}">
+    </div>
+    <div class="form-group">
       <label for="players">Players</label>
       <div th:each="player : ${players}" class="form-check form-check-inline">
         <input type="checkbox" class="form-check-input" name="players"

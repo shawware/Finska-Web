@@ -7,13 +7,12 @@
 
 package au.com.shawware.finska.controller;
 
-import java.util.Enumeration;
-import java.util.HashSet;
-import java.util.Map;
+import java.time.LocalDate;
 import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -100,6 +99,7 @@ public class AdminController extends AbstractController
     @PostMapping("/update/round/{number}")
     public String updateRound(@PathVariable("number") int number,
         @RequestParam("players") int[] players,
+        @RequestParam("round-date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate roundDate,
         HttpServletRequest request, Model model)
     {
         FinskaCompetition competition = mResultsService.getCompetition();
