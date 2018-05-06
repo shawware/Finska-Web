@@ -66,7 +66,7 @@
 </div>
 
 <div th:fragment="edit">
-  <form method="post" th:action="@{/admin/update/round/{number}(number=${round.key})}">
+  <form method="post" th:action="@{/admin/edit/round/{number}(number=${round.key})}">
     <div class="form-group">
       <label for="round-date">Date Played</label>
       <input name="round-date" type="date" th:value="${round.roundDate.toString()}">
@@ -78,7 +78,8 @@
           th:checked="${checked.contains(player.value.id)}" th:value="${player.value.id}" th:text="${player.value.key}">
       </div>
     </div>
-    <button type="submit" class="btn btn-primary" th:text="Submit" th:value="update"></button>
+    <input type="hidden" name="competition" th:value="${competition.id}">
+    <button type="submit" class="btn btn-primary" th:text="Update" th:value="update"></button>
   </form>
 </div>
 

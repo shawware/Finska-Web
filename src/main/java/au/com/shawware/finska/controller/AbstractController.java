@@ -9,9 +9,9 @@ package au.com.shawware.finska.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import au.com.shawware.finska.service.CreateService;
 import au.com.shawware.finska.service.DataService;
 import au.com.shawware.finska.service.ResultsService;
+import au.com.shawware.finska.service.RoundService;
 
 /**
  * Base class for controllers.
@@ -55,8 +55,8 @@ public abstract class AbstractController
     protected final DataService mDataService;
     /** The derived result service. */
     protected final ResultsService mResultsService;
-    /** The derived result service. */
-    protected final CreateService mCreateService;
+    /** The derived round service. */
+    protected final RoundService mRoundService;
 
     /**
      * Constructs a new controller.
@@ -67,6 +67,6 @@ public abstract class AbstractController
     {
         mDataService    = dataService;
         mResultsService = dataService.getResultsService();
-        mCreateService  = dataService.getCreateService();
+        mRoundService   = dataService.getRoundService();
     }
 }

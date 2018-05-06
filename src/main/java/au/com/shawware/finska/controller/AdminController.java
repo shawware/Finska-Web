@@ -10,8 +10,6 @@ package au.com.shawware.finska.controller;
 import java.time.LocalDate;
 import java.util.Set;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,6 +18,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
 
 import au.com.shawware.finska.entity.FinskaCompetition;
 import au.com.shawware.finska.entity.FinskaRound;
@@ -72,28 +71,20 @@ public class AdminController extends AbstractController
      * @param competitionID the competition ID
      * @param roundDate the new round's date
      * @param playerIDs the IDs of the players participating in this round
-     * @param model the model to add data to
      * 
-     * @return The template name.
+     * @return The next page to display.
      * 
      * @throws PersistenceException error creating round
      */
     @PostMapping("/create/round")
-    public String createRound(
+    public ModelAndView createRound(
         @RequestParam("competition") int competitionID,
         @RequestParam("round-date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate roundDate,
-        @RequestParam("players") int[] playerIDs, Model model)
+        @RequestParam("players") int[] playerIDs)
         throws PersistenceException
     {
-        FinskaCompetition competition = mResultsService.getCompetition();
-        FinskaRound round = mCreateService.createRound(competitionID, roundDate, playerIDs);
-        model.addAttribute(VIEW_NAME, competition.getKey() + ": Round " + round.getKey());
-        model.addAttribute(FRAGMENT_FILE_KEY, ROUND);
-        model.addAttribute(FRAGMENT_NAME_KEY, DISPLAY);
-        model.addAttribute(ROUND, round);
-        model.addAttribute(COMPETITION, competition);
-        model.addAttribute(PLAYERS, mResultsService.getPlayers());
-        return TEMPLATE;
+        FinskaRound round = mRoundService.createRound(competitionID, roundDate, playerIDs);
+        return new ModelAndView("redirect:/admin/edit/round/" + round.getKey());
     }
 
     /**
@@ -124,25 +115,22 @@ public class AdminController extends AbstractController
      * Updated the nominated round with the submitted data.
      * 
      * @param number the round number
-     * @param players the players selected for this round
-     * @param model the model to add data to
+     * @param competitionID the competition ID
+     * @param players the players selected for this round (updated)
+     * @param roundDate the updated round date
      * 
-     * @return The template name.
+     * @return The next page to display.
+     * 
+     * @throws PersistenceException error updating round
      */
-    @PostMapping("/update/round/{number}")
-    public String updateRound(@PathVariable("number") int number,
+    @PostMapping("/edit/round/{number}")
+    public ModelAndView updateRound(@PathVariable("number") int number,
+        @RequestParam("competition") int competitionID,
         @RequestParam("players") int[] players,
-        @RequestParam("round-date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate roundDate,
-        HttpServletRequest request, Model model)
+        @RequestParam("round-date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate roundDate)
+        throws PersistenceException
     {
-        FinskaCompetition competition = mResultsService.getCompetition();
-        FinskaRound round = mResultsService.getRound(number);
-        model.addAttribute(VIEW_NAME, competition.getKey() + ": Round " + number);
-        model.addAttribute(FRAGMENT_FILE_KEY, ROUND);
-        model.addAttribute(FRAGMENT_NAME_KEY, DISPLAY);
-        model.addAttribute(COMPETITION, competition);
-        model.addAttribute(ROUND, round);
-        model.addAttribute(PLAYERS, mResultsService.getPlayers());
-        return TEMPLATE;
+        mRoundService.updateRound(competitionID, number, roundDate, players);
+        return new ModelAndView("redirect:/display/rounds");
     }
 }
