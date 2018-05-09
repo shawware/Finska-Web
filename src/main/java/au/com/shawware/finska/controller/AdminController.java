@@ -32,7 +32,7 @@ import au.com.shawware.util.persistence.PersistenceException;
  */
 @Controller
 @RequestMapping("/admin")
-@SuppressWarnings({ "nls" })
+@SuppressWarnings({ "nls", "static-method" })
 public class AdminController extends AbstractController
 {
     /**
@@ -76,7 +76,7 @@ public class AdminController extends AbstractController
      * 
      * @throws PersistenceException error creating round
      */
-    @PostMapping("/create/round")
+    @PostMapping(value="/create/round", params="action=create")
     public ModelAndView createRound(
         @RequestParam("competition") int competitionID,
         @RequestParam("round-date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate roundDate,
@@ -85,6 +85,17 @@ public class AdminController extends AbstractController
     {
         FinskaRound round = mRoundService.createRound(competitionID, roundDate, playerIDs);
         return new ModelAndView("redirect:/admin/edit/round/" + round.getKey());
+    }
+
+    /**
+     * Cancels the creation of a new round.
+     * 
+     * @return The next page to display.
+     */
+    @PostMapping(value="/create/round", params="action=cancel")
+    public ModelAndView cancelCreateRound()
+    {
+        return new ModelAndView("redirect:/");
     }
 
     /**
@@ -112,7 +123,7 @@ public class AdminController extends AbstractController
     }
 
     /**
-     * Updated the nominated round with the submitted data.
+     * Updates the nominated round with the submitted data.
      * 
      * @param number the round number
      * @param competitionID the competition ID
@@ -123,7 +134,7 @@ public class AdminController extends AbstractController
      * 
      * @throws PersistenceException error updating round
      */
-    @PostMapping("/edit/round/{number}")
+    @PostMapping(value="/edit/round/{number}", params="action=update")
     public ModelAndView updateRound(@PathVariable("number") int number,
         @RequestParam("competition") int competitionID,
         @RequestParam("players") int[] players,
@@ -132,5 +143,16 @@ public class AdminController extends AbstractController
     {
         mRoundService.updateRound(competitionID, number, roundDate, players);
         return new ModelAndView("redirect:/display/rounds");
+    }
+
+    /**
+     * Cancels the editing of a round.
+     * 
+     * @return The next page to display.
+     */
+    @PostMapping(value="/edit/round/{number}", params="action=cancel")
+    public ModelAndView cancelEditRound()
+    {
+        return new ModelAndView("redirect:/");
     }
 }

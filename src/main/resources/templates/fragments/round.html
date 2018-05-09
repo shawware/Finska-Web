@@ -61,7 +61,8 @@
       </div>
     </div>
     <input type="hidden" name="competition" th:value="${competition.id}">
-    <button type="submit" class="btn btn-primary" th:text="Create" th:value="create"></button>
+    <button type="submit" class="btn btn-primary"   name="action" th:text="Create" th:value="create"></button>
+    <button type="submit" class="btn btn-secondary" name="action" th:text="Cancel" th:value="cancel"></button>
   </form>
 </div>
 
@@ -79,7 +80,8 @@
       </div>
     </div>
     <input type="hidden" name="competition" th:value="${competition.id}">
-    <button type="submit" class="btn btn-primary" th:text="Update" th:value="update"></button>
+    <button type="submit" class="btn btn-primary"   name="action" th:text="Update" th:value="update"></button>
+    <button type="submit" class="btn btn-secondary" name="action" th:text="Cancel" th:value="cancel"></button>
   </form>
 </div>
 
