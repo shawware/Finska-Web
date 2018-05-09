@@ -83,10 +83,12 @@ public abstract class AbstractController
      */
     protected final ModelAndView redirectTo(String endpoint)
     {
+        String safeEndpoint = "";
         if (endpoint.charAt(0) != '/')
         {
-            endpoint = "/" + endpoint;
+            safeEndpoint += "/";
         }
-        return new ModelAndView("redirect:" + endpoint);
+        safeEndpoint += endpoint;
+        return new ModelAndView("redirect:" + safeEndpoint);
     }
 }
