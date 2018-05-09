@@ -32,7 +32,7 @@ import au.com.shawware.util.persistence.PersistenceException;
  */
 @Controller
 @RequestMapping("/admin")
-@SuppressWarnings({ "nls", "static-method" })
+@SuppressWarnings({ "nls" })
 public class AdminController extends AbstractController
 {
     /**
@@ -84,7 +84,7 @@ public class AdminController extends AbstractController
         throws PersistenceException
     {
         FinskaRound round = mRoundService.createRound(competitionID, roundDate, playerIDs);
-        return new ModelAndView("redirect:/admin/edit/round/" + round.getKey());
+        return redirectTo("/admin/edit/round/" + round.getKey());
     }
 
     /**
@@ -95,7 +95,7 @@ public class AdminController extends AbstractController
     @PostMapping(value="/create/round", params="action=cancel")
     public ModelAndView cancelCreateRound()
     {
-        return new ModelAndView("redirect:/");
+        return redirectTo(HOME);
     }
 
     /**
@@ -142,7 +142,7 @@ public class AdminController extends AbstractController
         throws PersistenceException
     {
         mRoundService.updateRound(competitionID, number, roundDate, players);
-        return new ModelAndView("redirect:/display/rounds");
+        return redirectTo("/display/rounds");
     }
 
     /**
@@ -153,6 +153,6 @@ public class AdminController extends AbstractController
     @PostMapping(value="/edit/round/{number}", params="action=cancel")
     public ModelAndView cancelEditRound()
     {
-        return new ModelAndView("redirect:/");
+        return redirectTo(HOME);
     }
 }

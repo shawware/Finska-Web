@@ -8,6 +8,7 @@
 package au.com.shawware.finska.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.servlet.ModelAndView;
 
 import au.com.shawware.finska.service.DataService;
 import au.com.shawware.finska.service.ResultsService;
@@ -18,7 +19,7 @@ import au.com.shawware.finska.service.RoundService;
  *
  * @author <a href="mailto:david.shaw@shawware.com.au">David Shaw</a>
  */
-@SuppressWarnings({ "nls" })
+@SuppressWarnings({ "nls", "static-method" })
 public abstract class AbstractController
 {
     /** The name of the template to use for all views. */
@@ -50,6 +51,9 @@ public abstract class AbstractController
     /** The key used for the edit operation. */
     protected static final String EDIT = "edit";
 
+    /** The home end point. */
+    protected static final String HOME = "/";
+
     /** The injected data service. */
     @Autowired
     protected final DataService mDataService;
@@ -68,5 +72,21 @@ public abstract class AbstractController
         mDataService    = dataService;
         mResultsService = dataService.getResultsService();
         mRoundService   = dataService.getRoundService();
+    }
+
+    /**
+     * Returns a view that redirects the user to the given end point.
+     * 
+     * @param endpoint the end point to redirect to
+     * 
+     * @return The necessary view.
+     */
+    protected final ModelAndView redirectTo(String endpoint)
+    {
+        if (endpoint.charAt(0) != '/')
+        {
+            endpoint = "/" + endpoint;
+        }
+        return new ModelAndView("redirect:" + endpoint);
     }
 }

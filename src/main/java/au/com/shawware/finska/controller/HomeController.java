@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import au.com.shawware.finska.service.DataService;
+
 /**
  * Handles requests to the root end point.
  *
@@ -19,9 +21,19 @@ import org.springframework.web.servlet.ModelAndView;
  */
 @Controller
 @RequestMapping("/")
-@SuppressWarnings({ "nls", "static-method" })
-public class HomeController
+@SuppressWarnings({ "nls" })
+public class HomeController extends AbstractController
 {
+    /**
+     * Constructs a new controller.
+     * 
+     * @param dataService the data service to use
+     */
+    public HomeController(DataService dataService)
+    {
+        super(dataService);
+    }
+
     /**
      * Redirect from the root end point to the root of the display.
      * 
@@ -30,6 +42,6 @@ public class HomeController
     @GetMapping({"", "/"})
     public ModelAndView slash()
     {
-        return new ModelAndView("redirect:/display");
+        return redirectTo("/display");
     }
 }
