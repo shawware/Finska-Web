@@ -43,6 +43,10 @@ public abstract class AbstractController
     protected static final String ROUNDS = "rounds";
     /** The name of the attribute / file key that is used for a single round. */
     protected static final String ROUND = "round";
+    /** The name of the attribute that is used for matches. */
+    protected static final String MATCHES = "matches";
+    /** The name of the attribute / file key that is used for a single match. */
+    protected static final String MATCH = "match";
 
     /** The key used for the display operation. */
     protected static final String DISPLAY = "display";

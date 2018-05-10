@@ -118,6 +118,7 @@ public class AdminController extends AbstractController
         model.addAttribute(COMPETITION, competition);
         model.addAttribute(ROUND, round);
         model.addAttribute("checked", ids);
+        model.addAttribute(MATCHES, round.getMatches());
         model.addAttribute(PLAYERS, mResultsService.getPlayers());
         return TEMPLATE;
     }

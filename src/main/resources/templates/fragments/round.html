@@ -73,16 +73,39 @@
       <input name="round-date" type="date" th:value="${round.roundDate.toString()}">
     </div>
     <div class="form-group">
-      <label for="players">Players</label>
+      <label class="form-check-label" for="players">Players</label>
       <div th:each="player : ${players}" class="form-check form-check-inline">
         <input type="checkbox" class="form-check-input" name="players"
           th:checked="${checked.contains(player.value.id)}" th:value="${player.value.id}" th:text="${player.value.key}">
       </div>
     </div>
     <input type="hidden" name="competition" th:value="${competition.id}">
-    <button type="submit" class="btn btn-primary"   name="action" th:text="Update" th:value="update"></button>
-    <button type="submit" class="btn btn-secondary" name="action" th:text="Cancel" th:value="cancel"></button>
+    <button type="submit" class="btn btn-primary"   name="action" th:text="Update"   th:value="update"></button>
+    <button type="submit" class="btn btn-primary"   name="action" th:text="AddMatch" th:value="addmatch"></button>
+    <button type="submit" class="btn btn-secondary" name="action" th:text="Cancel"   th:value="cancel"></button>
   </form>
+  <div th:each="match : ${matches}">
+    <hr/>
+    <form method="post" th:action="@{/admin/edit/match/{number}(number=${match.key})}">
+      <h2 th:text="'Match ' + ${match.key}">Match</h2>
+      <div class="form-group">
+        <label class="form-check-label" for="winners">Winner(s)</label>
+        <div th:each="player : ${round.players}" class="form-check form-check-inline">
+          <input type="checkbox" class="form-check-input" name="winners"
+            th:checked="${match.isWinner(player.id)}" th:value="${player.id}" th:text="${player.key}">
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-check-label" for="fast-winners">Fast Win</label>
+        <div class="form-check form-check-inline">
+          <input type="checkbox" class="form-check-input" name="fast-winners" th:checked="${match.hasFastWinner()}">
+        </div>
+      </div>
+      <input type="hidden" name="competition" th:value="${competition.id}">
+      <input type="hidden" name="round" th:value="${round.key}">
+      <button type="submit" class="btn btn-primary" name="action" th:text="UpdateMatch" th:value="update"></button>
+    </form>
+  </div>
 </div>
 
 </body>
