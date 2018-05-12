@@ -86,8 +86,8 @@
   </form>
   <div th:each="match : ${matches}">
     <hr/>
+    <h2 th:text="#{sw.finska.admin.title.update.match(${match.key})}"></h2>
     <form method="post" th:action="@{/admin/edit/match/{number}(number=${match.key})}">
-      <h2 th:text="'Match ' + ${match.key}">Match</h2>
       <div class="form-group">
         <label class="form-check-label" for="winners" th:text="#{sw.finska.admin.label.winners}"></label>
         <div th:each="player : ${round.players}" class="form-check form-check-inline">
