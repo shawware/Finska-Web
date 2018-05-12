@@ -52,7 +52,7 @@ public class DisplayController extends AbstractController
     public String leaderBoard(Model model)
     {
         List<EntrantResult> leaderboard = mResultsService.getLeaderBoard();
-        model.addAttribute(VIEW_NAME, "sw.finska.page.title.leaderboard");
+        model.addAttribute(VIEW_TITLE, "sw.finska.page.title.leaderboard");
         processLeaderBoard(leaderboard, model);
         return TEMPLATE;
     }
@@ -69,7 +69,7 @@ public class DisplayController extends AbstractController
     public String leaderBoard(@PathVariable("number") int number, Model model)
     {
         List<EntrantResult> leaderboard = mResultsService.getLeaderBoard(number);
-        model.addAttribute(VIEW_NAME, "Leaderboard After Round " + number);
+        model.addAttribute(VIEW_TITLE, "Leaderboard After Round " + number);
         processLeaderBoard(leaderboard, model);
         return TEMPLATE;
     }
@@ -124,7 +124,7 @@ public class DisplayController extends AbstractController
         {
             model.addAttribute("data", false);
         }
-        model.addAttribute(VIEW_NAME, "sw.finska.page.title.rounds");
+        model.addAttribute(VIEW_TITLE, "sw.finska.page.title.rounds");
         model.addAttribute(FRAGMENT_FILE_KEY, ROUND);
         model.addAttribute(FRAGMENT_NAME_KEY, ROUNDS);
         return TEMPLATE;
@@ -141,7 +141,7 @@ public class DisplayController extends AbstractController
     public String players(Model model)
     {
         Map<Integer, Player> players = mResultsService.getPlayers();
-        model.addAttribute(VIEW_NAME, "sw.finska.page.title.players");
+        model.addAttribute(VIEW_TITLE, "sw.finska.page.title.players");
         model.addAttribute(PLAYERS, players);
         model.addAttribute(FRAGMENT_FILE_KEY, PLAYER);
         model.addAttribute(FRAGMENT_NAME_KEY, PLAYERS);
@@ -160,7 +160,7 @@ public class DisplayController extends AbstractController
     public String player(@PathVariable("id") int id, Model model)
     {
         Player player = mResultsService.getPlayer(id);
-        model.addAttribute(VIEW_NAME, "Player " + id);
+        model.addAttribute(VIEW_TITLE, "Player " + id);
         model.addAttribute(PLAYER, player);
         model.addAttribute(FRAGMENT_FILE_KEY, PLAYER);
         model.addAttribute(FRAGMENT_NAME_KEY, PLAYER);
@@ -178,7 +178,7 @@ public class DisplayController extends AbstractController
     public String competition(Model model)
     {
         FinskaCompetition competition = mResultsService.getCompetition();
-        model.addAttribute(VIEW_NAME, "Current Competition: " + competition.getKey());
+        model.addAttribute(VIEW_TITLE, "Current Competition: " + competition.getKey());
         model.addAttribute(COMPETITION, competition);
         model.addAttribute(ROUNDS, mResultsService.getRounds());
         model.addAttribute(PLAYERS, mResultsService.getPlayers());
@@ -198,7 +198,7 @@ public class DisplayController extends AbstractController
     @GetMapping("/round/{number}")
     public String round(@PathVariable("number") int number, Model model)
     {
-        model.addAttribute(VIEW_NAME, "Round " + number);
+        model.addAttribute(VIEW_TITLE, "Round " + number);
         model.addAttribute(ROUND, mResultsService.getRound(number));
         model.addAttribute(FRAGMENT_FILE_KEY, ROUND);
         model.addAttribute(FRAGMENT_NAME_KEY, DISPLAY);

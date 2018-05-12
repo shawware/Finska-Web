@@ -24,12 +24,12 @@ public abstract class AbstractController
 {
     /** The name of the template to use for all views. */
     protected static final String TEMPLATE = "layout";
-    /** The name of attribute that identifies the fragment file. */
+    /** The name of the attribute that identifies the fragment file. */
     protected static final String FRAGMENT_FILE_KEY = "entityType";
-    /** The name of attribute that identifies the fragment. */
+    /** The name of the attribute that identifies the fragment. */
     protected static final String FRAGMENT_NAME_KEY = "entityView";
-    /** The name of attribute that identifies the view. */
-    protected static final String VIEW_NAME = "title";
+    /** The name of the attribute that identifies the view. */
+    protected static final String VIEW_TITLE = "title";
 
     /** The name of the attribute / file key that is used for a single competition. */
     protected static final String COMPETITION = "competition";
