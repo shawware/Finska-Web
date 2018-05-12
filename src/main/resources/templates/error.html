@@ -13,8 +13,8 @@
 
 <div class="container">
   <div th:replace="fragments/nav :: nav"></div>
-  <h1>Oops</h1>
-  <p>Oh dear, an error occurred. It's kind of a first-world problem though, don't you think.</p>
+  <h1 th:text="#{sw.finska.error.title}">Oops</h1>
+  <p th:text="#{sw.finska.error.message}">Internal error :(</p>
 </div>
 
 </body>

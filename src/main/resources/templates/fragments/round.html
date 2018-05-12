@@ -1,21 +1,21 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-  <title>Matches</title>
+  <title>Rounds</title>
 </head>
 <body>
 
 <div th:fragment="rounds">
   <th:block th:if="${results.size() > 0}">
-    <h1 th:text="${competition.key}">Name</h1>
+    <h1 th:text="${competition.key}"></h1>
     <th:block th:each="i: ${#numbers.sequence(rounds.size() - 1, 0, -1)}">
       <h2 th:text="${'Round: ' + rounds.get(i).key + ' (' + rounds.get(i).roundDate + ')'}"></h2>
       <table class="table table-bordered table-striped">
         <thead class="thead-dark">
           <tr>
-            <th>Player</th>
+            <th th:text="#{sw.finska.player}"></th>
             <th:block th:each="itemName : ${spec.itemNames}">
-              <th class="text-center" th:text="${itemName}">Name</th>
+              <th class="text-center" th:text="${itemName}"></th>
             </th:block>
           </tr>
         </thead>
@@ -36,7 +36,7 @@
   <table class="table table-bordered table-striped">
     <thead class="thead-dark">
       <tr>
-        <th>Player</th>
+        <th th:text="#{sw.finska.player}"></th>
       </tr>
     </thead>
     <tbody>
@@ -50,60 +50,60 @@
 <div th:fragment="create">
   <form method="post" th:action="@{/admin/create/round}">
     <div class="form-group">
-      <label for="round-date">Date Played</label>
+      <label for="round-date" th:text="#{sw.finska.admin.label.datePlayed}"></label>
       <input name="round-date" type="date" th:value="${date.toString()}">
     </div>
     <div class="form-group">
-      <label for="players">Players</label>
+      <label class="form-check-label" for="players" th:text="#{sw.finska.admin.label.players}"></label>
       <div th:each="player : ${players}" class="form-check form-check-inline">
         <input type="checkbox" class="form-check-input" name="players"
           th:value="${player.value.id}" th:text="${player.value.key}">
       </div>
     </div>
     <input type="hidden" name="competition" th:value="${competition.id}">
-    <button type="submit" class="btn btn-primary"   name="action" th:text="Create" th:value="create"></button>
-    <button type="submit" class="btn btn-secondary" name="action" th:text="Cancel" th:value="cancel"></button>
+    <button type="submit" class="btn btn-primary"   name="action" th:text="#{sw.finska.admin.button.create}" th:value="create"></button>
+    <button type="submit" class="btn btn-secondary" name="action" th:text="#{sw.finska.admin.button.cancel}" th:value="cancel"></button>
   </form>
 </div>
 
 <div th:fragment="edit">
   <form method="post" th:action="@{/admin/edit/round/{number}(number=${round.key})}">
     <div class="form-group">
-      <label for="round-date">Date Played</label>
+      <label for="round-date" th:text="#{sw.finska.admin.label.datePlayed}"></label>
       <input name="round-date" type="date" th:value="${round.roundDate.toString()}">
     </div>
     <div class="form-group">
-      <label class="form-check-label" for="players">Players</label>
+      <label class="form-check-label" for="players" th:text="#{sw.finska.admin.label.players}"></label>
       <div th:each="player : ${players}" class="form-check form-check-inline">
         <input type="checkbox" class="form-check-input" name="players"
           th:checked="${checked.contains(player.value.id)}" th:value="${player.value.id}" th:text="${player.value.key}">
       </div>
     </div>
     <input type="hidden" name="competition" th:value="${competition.id}">
-    <button type="submit" class="btn btn-primary"   name="action" th:text="Update"   th:value="update"></button>
-    <button type="submit" class="btn btn-primary"   name="action" th:text="AddMatch" th:value="addmatch"></button>
-    <button type="submit" class="btn btn-secondary" name="action" th:text="Cancel"   th:value="cancel"></button>
+    <button type="submit" class="btn btn-primary"   name="action" th:text="#{sw.finska.admin.button.update}"       th:value="update"></button>
+    <button type="submit" class="btn btn-primary"   name="action" th:text="#{sw.finska.admin.button.create.match}" th:value="create"></button>
+    <button type="submit" class="btn btn-secondary" name="action" th:text="#{sw.finska.admin.button.cancel}"       th:value="cancel"></button>
   </form>
   <div th:each="match : ${matches}">
     <hr/>
     <form method="post" th:action="@{/admin/edit/match/{number}(number=${match.key})}">
       <h2 th:text="'Match ' + ${match.key}">Match</h2>
       <div class="form-group">
-        <label class="form-check-label" for="winners">Winner(s)</label>
+        <label class="form-check-label" for="winners" th:text="#{sw.finska.admin.label.winners}"></label>
         <div th:each="player : ${round.players}" class="form-check form-check-inline">
           <input type="checkbox" class="form-check-input" name="winners"
             th:checked="${match.isWinner(player.id)}" th:value="${player.id}" th:text="${player.key}">
         </div>
       </div>
       <div class="form-group">
-        <label class="form-check-label" for="fast-winners">Fast Win</label>
+        <label class="form-check-label" for="fast-winners" th:text="#{sw.finska.admin.label.fastWin}"></label>
         <div class="form-check form-check-inline">
           <input type="checkbox" class="form-check-input" name="fast-winners" th:checked="${match.hasFastWinner()}">
         </div>
       </div>
       <input type="hidden" name="competition" th:value="${competition.id}">
       <input type="hidden" name="round" th:value="${round.key}">
-      <button type="submit" class="btn btn-primary" name="action" th:text="UpdateMatch" th:value="update"></button>
+      <button type="submit" class="btn btn-primary" name="action" th:text="#{sw.finska.admin.button.update.match}" th:value="update"></button>
     </form>
   </div>
 </div>

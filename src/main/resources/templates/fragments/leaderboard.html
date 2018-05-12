@@ -9,8 +9,8 @@
   <table th:if="${data}" class="table table-bordered table-striped">
     <thead class="thead-dark">
       <tr>
-        <th class="text-center">Rank</th>
-        <th>Player</th>
+        <th class="text-center" th:text="#{sw.finska.heading.rank}"></th>
+        <th th:text="#{sw.finska.player}"></th>
         <th:block th:each="itemName : ${spec.itemNames}">
         <th class="text-center" th:text="${itemName}">Name</th>
         </th:block>
