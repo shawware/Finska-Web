@@ -56,7 +56,8 @@ public class AdminController extends AbstractController
     public String newRound(Model model)
     {
         FinskaCompetition competition = mResultsService.getCompetition();
-        model.addAttribute(VIEW_TITLE, competition.getKey() + ": Create New Round");
+        model.addAttribute(VIEW_TITLE, "sw.finska.page.title.round.create");
+        model.addAttribute(VIEW_TITLE_ARG, competition.getKey() );
         model.addAttribute(FRAGMENT_FILE_KEY, ROUND);
         model.addAttribute(FRAGMENT_NAME_KEY, CREATE);
         model.addAttribute(COMPETITION, competition);
@@ -113,6 +114,8 @@ public class AdminController extends AbstractController
         FinskaRound round = mResultsService.getRound(number);
         Set<Integer> ids = round.getPlayerIds();
         model.addAttribute(VIEW_TITLE, competition.getKey() + ": Round " + number);
+//        model.addAttribute(VIEW_TITLE, "sw.finska.page.title.round.edit");
+//        model.addAttribute(VIEW_TITLE_ARG, competition.getKey() );
         model.addAttribute(FRAGMENT_FILE_KEY, ROUND);
         model.addAttribute(FRAGMENT_NAME_KEY, EDIT);
         model.addAttribute(COMPETITION, competition);

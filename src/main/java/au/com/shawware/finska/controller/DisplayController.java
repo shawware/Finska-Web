@@ -69,7 +69,8 @@ public class DisplayController extends AbstractController
     public String leaderBoard(@PathVariable("number") int number, Model model)
     {
         List<EntrantResult> leaderboard = mResultsService.getLeaderBoard(number);
-        model.addAttribute(VIEW_TITLE, "Leaderboard After Round " + number);
+        model.addAttribute(VIEW_TITLE, "sw.finska.page.title.leaderboard.round");
+        model.addAttribute(VIEW_TITLE_ARG, number);
         processLeaderBoard(leaderboard, model);
         return TEMPLATE;
     }
@@ -160,7 +161,8 @@ public class DisplayController extends AbstractController
     public String player(@PathVariable("id") int id, Model model)
     {
         Player player = mResultsService.getPlayer(id);
-        model.addAttribute(VIEW_TITLE, "Player " + id);
+        model.addAttribute(VIEW_TITLE, "sw.finska.page.title.player");
+        model.addAttribute(VIEW_TITLE_ARG, id);
         model.addAttribute(PLAYER, player);
         model.addAttribute(FRAGMENT_FILE_KEY, PLAYER);
         model.addAttribute(FRAGMENT_NAME_KEY, PLAYER);
@@ -178,7 +180,8 @@ public class DisplayController extends AbstractController
     public String competition(Model model)
     {
         FinskaCompetition competition = mResultsService.getCompetition();
-        model.addAttribute(VIEW_TITLE, "Current Competition: " + competition.getKey());
+        model.addAttribute(VIEW_TITLE, "sw.finska.page.title.competition");
+        model.addAttribute(VIEW_TITLE_ARG, competition.getKey());
         model.addAttribute(COMPETITION, competition);
         model.addAttribute(ROUNDS, mResultsService.getRounds());
         model.addAttribute(PLAYERS, mResultsService.getPlayers());
@@ -198,7 +201,8 @@ public class DisplayController extends AbstractController
     @GetMapping("/round/{number}")
     public String round(@PathVariable("number") int number, Model model)
     {
-        model.addAttribute(VIEW_TITLE, "Round " + number);
+        model.addAttribute(VIEW_TITLE, "sw.finska.page.title.round");
+        model.addAttribute(VIEW_TITLE_ARG, number);
         model.addAttribute(ROUND, mResultsService.getRound(number));
         model.addAttribute(FRAGMENT_FILE_KEY, ROUND);
         model.addAttribute(FRAGMENT_NAME_KEY, DISPLAY);

@@ -30,6 +30,8 @@ public abstract class AbstractController
     protected static final String FRAGMENT_NAME_KEY = "entityView";
     /** The name of the attribute that identifies the view. */
     protected static final String VIEW_TITLE = "title";
+    /** The name of the attribute that identifies the first argument to suppled to the view title. */
+    protected static final String VIEW_TITLE_ARG = "titleArg";
 
     /** The name of the attribute / file key that is used for a single competition. */
     protected static final String COMPETITION = "competition";
