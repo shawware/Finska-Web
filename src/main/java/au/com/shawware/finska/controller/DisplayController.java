@@ -52,7 +52,7 @@ public class DisplayController extends AbstractController
     public String leaderBoard(Model model)
     {
         List<EntrantResult> leaderboard = mResultsService.getLeaderBoard();
-        model.addAttribute(VIEW_NAME, "Current Leaderboard");
+        model.addAttribute(VIEW_NAME, "sw.finska.page.title.leaderboard");
         processLeaderBoard(leaderboard, model);
         return TEMPLATE;
     }
@@ -124,7 +124,7 @@ public class DisplayController extends AbstractController
         {
             model.addAttribute("data", false);
         }
-        model.addAttribute(VIEW_NAME, "Round Summaries");
+        model.addAttribute(VIEW_NAME, "sw.finska.page.title.rounds");
         model.addAttribute(FRAGMENT_FILE_KEY, ROUND);
         model.addAttribute(FRAGMENT_NAME_KEY, ROUNDS);
         return TEMPLATE;
@@ -141,7 +141,7 @@ public class DisplayController extends AbstractController
     public String players(Model model)
     {
         Map<Integer, Player> players = mResultsService.getPlayers();
-        model.addAttribute(VIEW_NAME, "Players");
+        model.addAttribute(VIEW_NAME, "sw.finska.page.title.players");
         model.addAttribute(PLAYERS, players);
         model.addAttribute(FRAGMENT_FILE_KEY, PLAYER);
         model.addAttribute(FRAGMENT_NAME_KEY, PLAYERS);
