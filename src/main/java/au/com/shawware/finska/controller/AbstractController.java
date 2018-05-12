@@ -31,7 +31,9 @@ public abstract class AbstractController
     /** The name of the attribute that identifies the view. */
     protected static final String VIEW_TITLE = "title";
     /** The name of the attribute that identifies the first argument to suppled to the view title. */
-    protected static final String VIEW_TITLE_ARG = "titleArg";
+    protected static final String VIEW_TITLE_ARG_ONE = "titleArgOne";
+    /** The name of the attribute that identifies the second argument to suppled to the view title. */
+    protected static final String VIEW_TITLE_ARG_TWO = "titleArgTwo";
 
     /** The name of the attribute / file key that is used for a single competition. */
     protected static final String COMPETITION = "competition";

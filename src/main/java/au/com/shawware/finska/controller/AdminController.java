@@ -32,7 +32,7 @@ import au.com.shawware.util.persistence.PersistenceException;
  */
 @Controller
 @RequestMapping("/admin")
-@SuppressWarnings({ "nls" })
+@SuppressWarnings({ "nls", "boxing" })
 public class AdminController extends AbstractController
 {
     /**
@@ -57,7 +57,7 @@ public class AdminController extends AbstractController
     {
         FinskaCompetition competition = mResultsService.getCompetition();
         model.addAttribute(VIEW_TITLE, "sw.finska.page.title.round.create");
-        model.addAttribute(VIEW_TITLE_ARG, competition.getKey() );
+        model.addAttribute(VIEW_TITLE_ARG_ONE, competition.getKey() );
         model.addAttribute(FRAGMENT_FILE_KEY, ROUND);
         model.addAttribute(FRAGMENT_NAME_KEY, CREATE);
         model.addAttribute(COMPETITION, competition);
@@ -113,9 +113,9 @@ public class AdminController extends AbstractController
         FinskaCompetition competition = mResultsService.getCompetition();
         FinskaRound round = mResultsService.getRound(number);
         Set<Integer> ids = round.getPlayerIds();
-        model.addAttribute(VIEW_TITLE, competition.getKey() + ": Round " + number);
-//        model.addAttribute(VIEW_TITLE, "sw.finska.page.title.round.edit");
-//        model.addAttribute(VIEW_TITLE_ARG, competition.getKey() );
+        model.addAttribute(VIEW_TITLE, "sw.finska.page.title.round.edit");
+        model.addAttribute(VIEW_TITLE_ARG_ONE, competition.getKey());
+        model.addAttribute(VIEW_TITLE_ARG_TWO, number);
         model.addAttribute(FRAGMENT_FILE_KEY, ROUND);
         model.addAttribute(FRAGMENT_NAME_KEY, EDIT);
         model.addAttribute(COMPETITION, competition);

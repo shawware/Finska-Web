@@ -70,7 +70,7 @@ public class DisplayController extends AbstractController
     {
         List<EntrantResult> leaderboard = mResultsService.getLeaderBoard(number);
         model.addAttribute(VIEW_TITLE, "sw.finska.page.title.leaderboard.round");
-        model.addAttribute(VIEW_TITLE_ARG, number);
+        model.addAttribute(VIEW_TITLE_ARG_ONE, number);
         processLeaderBoard(leaderboard, model);
         return TEMPLATE;
     }
@@ -162,7 +162,7 @@ public class DisplayController extends AbstractController
     {
         Player player = mResultsService.getPlayer(id);
         model.addAttribute(VIEW_TITLE, "sw.finska.page.title.player");
-        model.addAttribute(VIEW_TITLE_ARG, id);
+        model.addAttribute(VIEW_TITLE_ARG_ONE, id);
         model.addAttribute(PLAYER, player);
         model.addAttribute(FRAGMENT_FILE_KEY, PLAYER);
         model.addAttribute(FRAGMENT_NAME_KEY, PLAYER);
@@ -181,7 +181,7 @@ public class DisplayController extends AbstractController
     {
         FinskaCompetition competition = mResultsService.getCompetition();
         model.addAttribute(VIEW_TITLE, "sw.finska.page.title.competition");
-        model.addAttribute(VIEW_TITLE_ARG, competition.getKey());
+        model.addAttribute(VIEW_TITLE_ARG_ONE, competition.getKey());
         model.addAttribute(COMPETITION, competition);
         model.addAttribute(ROUNDS, mResultsService.getRounds());
         model.addAttribute(PLAYERS, mResultsService.getPlayers());
@@ -202,7 +202,7 @@ public class DisplayController extends AbstractController
     public String round(@PathVariable("number") int number, Model model)
     {
         model.addAttribute(VIEW_TITLE, "sw.finska.page.title.round");
-        model.addAttribute(VIEW_TITLE_ARG, number);
+        model.addAttribute(VIEW_TITLE_ARG_ONE, number);
         model.addAttribute(ROUND, mResultsService.getRound(number));
         model.addAttribute(FRAGMENT_FILE_KEY, ROUND);
         model.addAttribute(FRAGMENT_NAME_KEY, DISPLAY);
