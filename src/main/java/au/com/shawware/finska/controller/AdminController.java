@@ -227,4 +227,29 @@ public class AdminController extends AbstractController
     {
         return redirectTo("/admin/edit/round/" + number);
     }
+
+    /**
+     * Updates the nominated match with the submitted data.
+     * 
+     * @param number the match number
+     * @param competitionID the competition ID
+     * @param round the round number
+     * @param winnerIds the updated IDs of the winners
+     * @param fastWin the updated fast win setting
+     * 
+     * @return The next page to display.
+     * 
+     * @throws PersistenceException error updating match
+     */
+    @PostMapping(value="/edit/match/{number}", params="action=update")
+    public ModelAndView updateMatch(@PathVariable("number") int number,
+        @RequestParam("competition") int competitionID,
+        @RequestParam("round") int round,
+        @RequestParam(name="winners", required=false) int[] winnerIds,
+        @RequestParam(name="fast-winners", defaultValue="false") boolean fastWin)
+        throws PersistenceException
+    {
+        mMatchService.updateMatch(competitionID, round, number, winnerIds, fastWin);
+        return redirectTo("/admin/edit/round/" + round);
+    }
 }
