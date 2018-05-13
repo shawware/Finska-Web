@@ -150,6 +150,34 @@ public class AdminController extends AbstractController
     }
 
     /**
+     * Commences the creation of a new match for the nominated round.
+     * 
+     * @param number the round number
+     * @param competitionID the competition ID
+     * @param model the model to add data to
+     * 
+     * @return The next page to display.
+     * 
+     * @throws PersistenceException error accessing data
+     */
+    @PostMapping(value="/edit/round/{number}", params="action=create")
+    public String createRound(@PathVariable("number") int number,
+        @RequestParam("competition") int competitionID, Model model)
+        throws PersistenceException
+    {
+        FinskaCompetition competition = mResultsService.getCompetition();
+        FinskaRound round = mResultsService.getRound(number);
+        model.addAttribute(VIEW_TITLE, "sw.finska.page.title.match.create");
+        model.addAttribute(VIEW_TITLE_ARG_ONE, competition.getKey());
+        model.addAttribute(VIEW_TITLE_ARG_TWO, number);
+        model.addAttribute(FRAGMENT_FILE_KEY, MATCH);
+        model.addAttribute(FRAGMENT_NAME_KEY, CREATE);
+        model.addAttribute(COMPETITION, competition);
+        model.addAttribute(ROUND, round);
+        return TEMPLATE;
+    }
+
+    /**
      * Cancels the editing of a round.
      * 
      * @return The next page to display.
@@ -158,5 +186,45 @@ public class AdminController extends AbstractController
     public ModelAndView cancelEditRound()
     {
         return redirectTo(HOME);
+    }
+
+    /**
+     * Creates a new match.
+     * 
+     * @param competitionID the competition ID
+     * @param number the round number
+     * @param winnerIds the IDs of the winning players
+     * @param fastWin whether these players had a fast win
+     * 
+     * @return The next page to display.
+     * 
+     * @throws PersistenceException error creating round
+     */
+    @PostMapping(value="/create/match", params="action=create")
+    public ModelAndView createMatch(
+        @RequestParam("competition") int competitionID,
+        @RequestParam("round") int number,
+        @RequestParam(name="winners", required=false) int[] winnerIds,
+        @RequestParam(name="fast-winners", defaultValue="false") boolean fastWin)
+        throws PersistenceException
+    {
+        mMatchService.createMatch(competitionID, number, winnerIds, fastWin);
+        return redirectTo("/admin/edit/round/" + number);
+    }
+
+    /**
+     * Cancels the creation of a new match (in the given competition and round).
+     * 
+     * @param competitionID the competition ID
+     * @param number the round number
+     * 
+     * @return The next page to display.
+     */
+    @PostMapping(value="/create/match", params="action=cancel")
+    public ModelAndView cancelCreateMatch(
+            @RequestParam("competition") int competitionID,
+            @RequestParam("round") int number)
+    {
+        return redirectTo("/admin/edit/round/" + number);
     }
 }

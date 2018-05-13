@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.servlet.ModelAndView;
 
 import au.com.shawware.finska.service.DataService;
+import au.com.shawware.finska.service.MatchService;
 import au.com.shawware.finska.service.ResultsService;
 import au.com.shawware.finska.service.RoundService;
 
@@ -69,6 +70,8 @@ public abstract class AbstractController
     protected final ResultsService mResultsService;
     /** The derived round service. */
     protected final RoundService mRoundService;
+    /** The derived match service. */
+    protected final MatchService mMatchService;
 
     /**
      * Constructs a new controller.
@@ -80,6 +83,7 @@ public abstract class AbstractController
         mDataService    = dataService;
         mResultsService = dataService.getResultsService();
         mRoundService   = dataService.getRoundService();
+        mMatchService   = dataService.getMatchService();
     }
 
     /**

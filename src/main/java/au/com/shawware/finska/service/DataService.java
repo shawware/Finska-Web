@@ -57,10 +57,18 @@ public class DataService
     }
 
     /**
-     * @return The create service.
+     * @return The round service.
      */
     public RoundService getRoundService()
     {
         return mServices.getRoundService();
+    }
+
+    /**
+     * @return The match service.
+     */
+    public MatchService getMatchService()
+    {
+        return mServices.getMatchService();
     }
 }
