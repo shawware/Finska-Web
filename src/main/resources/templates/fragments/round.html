@@ -15,7 +15,7 @@
           <tr>
             <th th:text="#{sw.finska.player}"></th>
             <th:block th:each="itemName : ${spec.itemNames}">
-              <th class="text-center" th:text="${itemName}"></th>
+              <th class="text-center" th:text="#{${'sw.finska.itemname.' + #strings.toLowerCase(itemName)}}"></th>
             </th:block>
           </tr>
         </thead>
