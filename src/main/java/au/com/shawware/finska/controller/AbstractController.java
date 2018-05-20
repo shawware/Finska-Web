@@ -8,6 +8,7 @@
 package au.com.shawware.finska.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.servlet.ModelAndView;
 
 import au.com.shawware.finska.service.DataService;
@@ -95,12 +96,26 @@ public abstract class AbstractController
      */
     protected final ModelAndView redirectTo(String endpoint)
     {
+        return redirectTo(endpoint, null);
+    }
+
+
+    /**
+     * Returns a view that redirects the user to the given end point.
+     * 
+     * @param endpoint the end point to redirect to
+     * @param model the model attributes to include
+     * 
+     * @return The necessary view.
+     */
+    protected final ModelAndView redirectTo(String endpoint, ModelMap model)
+    {
         String safeEndpoint = "";
         if (endpoint.charAt(0) != '/')
         {
             safeEndpoint += "/";
         }
         safeEndpoint += endpoint;
-        return new ModelAndView("redirect:" + safeEndpoint);
+        return new ModelAndView("redirect:" + safeEndpoint, model);
     }
 }

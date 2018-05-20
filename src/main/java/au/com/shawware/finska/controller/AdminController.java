@@ -13,6 +13,7 @@ import java.util.Set;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -161,12 +162,13 @@ public class AdminController extends AbstractController
      * @throws PersistenceException error accessing data
      */
     @PostMapping(value="/edit/round/{number}", params="action=create")
-    public String createRound(@PathVariable("number") int number,
-        @RequestParam("competition") int competitionID, Model model)
+    public ModelAndView createMatch(@PathVariable("number") int number,
+        @RequestParam("competition") int competitionID, ModelMap model)
         throws PersistenceException
     {
-        prepareToCreateMatch(model, competitionID, number);
-        return TEMPLATE;
+        model.addAttribute(COMPETITION, competitionID);
+        model.addAttribute(ROUND, number);
+        return redirectTo("/admin/create/match", model);
     }
 
     /**
@@ -178,6 +180,31 @@ public class AdminController extends AbstractController
     public ModelAndView cancelEditRound()
     {
         return redirectTo(HOME);
+    }
+
+    /**
+     * Displays a template for creating a new round.
+     * 
+     * @param competitionID the competition ID
+     * @param roundNumber the round number
+     * @param model the model to add data to
+     * 
+     * @return The template name.
+     */
+    @GetMapping("/create/match")
+    public String newMatch(@RequestParam("competition") int competitionID,
+            @RequestParam("round") int roundNumber, Model model)
+    {
+        FinskaCompetition competition = mResultsService.getCompetition();
+        FinskaRound round = mResultsService.getRound(roundNumber);
+        model.addAttribute(VIEW_TITLE, "sw.finska.page.title.match.create");
+        model.addAttribute(VIEW_TITLE_ARG_ONE, competition.getKey());
+        model.addAttribute(VIEW_TITLE_ARG_TWO, roundNumber);
+        model.addAttribute(FRAGMENT_FILE_KEY, MATCH);
+        model.addAttribute(FRAGMENT_NAME_KEY, CREATE);
+        model.addAttribute(COMPETITION, competition);
+        model.addAttribute(ROUND, round);
+        return TEMPLATE;
     }
 
     /**
@@ -258,32 +285,13 @@ public class AdminController extends AbstractController
      * @throws PersistenceException error updating match
      */
     @PostMapping(value="/edit/match/{number}", params="action=create")
-    public String updateMatch(@PathVariable("number") int number,
+    public ModelAndView updateMatch(@PathVariable("number") int number,
         @RequestParam("competition") int competitionID,
-        @RequestParam("round") int roundNumber, Model model)
+        @RequestParam("round") int roundNumber, ModelMap model)
         throws PersistenceException
     {
-        prepareToCreateMatch(model, competitionID, roundNumber);
-        return TEMPLATE;
-    }
-
-    /**
-     * Prepares the given model to add a new match to the given round.
-     * 
-     * @param model the model to update
-     * @param competitionID the competition ID
-     * @param roundNumber the round number (within the competition)
-     */
-    private void prepareToCreateMatch(Model model, int competitionID, int roundNumber)
-    {
-        FinskaCompetition competition = mResultsService.getCompetition();
-        FinskaRound round = mResultsService.getRound(roundNumber);
-        model.addAttribute(VIEW_TITLE, "sw.finska.page.title.match.create");
-        model.addAttribute(VIEW_TITLE_ARG_ONE, competition.getKey());
-        model.addAttribute(VIEW_TITLE_ARG_TWO, roundNumber);
-        model.addAttribute(FRAGMENT_FILE_KEY, MATCH);
-        model.addAttribute(FRAGMENT_NAME_KEY, CREATE);
-        model.addAttribute(COMPETITION, competition);
-        model.addAttribute(ROUND, round);
+        model.addAttribute(COMPETITION, competitionID);
+        model.addAttribute(ROUND, roundNumber);
+        return redirectTo("/admin/create/match", model);
     }
 }
