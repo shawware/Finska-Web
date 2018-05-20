@@ -83,7 +83,7 @@
     <button type="submit" class="btn btn-primary"   name="action" th:text="#{sw.finska.admin.button.update.round}"       th:value="update"></button>
     <button type="submit" class="btn btn-primary"   name="action" th:if="${round.numberOfMatches() == 0}"
                                                                   th:text="#{sw.finska.admin.button.create.match.first}" th:value="create"></button>
-    <button type="submit" class="btn btn-secondary" name="action" th:text="#{sw.finska.admin.button.cancel}"             th:value="cancel"></button>
+    <button type="submit" class="btn btn-secondary" name="action" th:text="#{sw.finska.admin.button.done}"               th:value="done"></button>
   </form>
   <div th:each="match, status : ${matches}">
     <hr/>

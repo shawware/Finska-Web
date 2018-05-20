@@ -147,7 +147,7 @@ public class AdminController extends AbstractController
         throws PersistenceException
     {
         mRoundService.updateRound(competitionID, number, roundDate, players);
-        return redirectTo("/display/rounds");
+        return redirectTo("/admin/edit/round/" + number);
     }
 
     /**
@@ -176,7 +176,7 @@ public class AdminController extends AbstractController
      * 
      * @return The next page to display.
      */
-    @PostMapping(value="/edit/round/{number}", params="action=cancel")
+    @PostMapping(value="/edit/round/{number}", params="action=done")
     public ModelAndView cancelEditRound()
     {
         return redirectTo(HOME);
