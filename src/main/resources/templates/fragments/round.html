@@ -61,7 +61,7 @@
       </div>
     </div>
     <input type="hidden" name="competition" th:value="${competition.id}">
-    <button type="submit" class="btn btn-primary"   name="action" th:text="#{sw.finska.admin.button.create}" th:value="create"></button>
+    <button type="submit" class="btn btn-primary"   name="action" th:text="#{sw.finska.admin.button.create.round}" th:value="create"></button>
     <button type="submit" class="btn btn-secondary" name="action" th:text="#{sw.finska.admin.button.cancel}" th:value="cancel"></button>
   </form>
 </div>
@@ -80,11 +80,12 @@
       </div>
     </div>
     <input type="hidden" name="competition" th:value="${competition.id}">
-    <button type="submit" class="btn btn-primary"   name="action" th:text="#{sw.finska.admin.button.update}"       th:value="update"></button>
-    <button type="submit" class="btn btn-primary"   name="action" th:text="#{sw.finska.admin.button.create.match}" th:value="create"></button>
-    <button type="submit" class="btn btn-secondary" name="action" th:text="#{sw.finska.admin.button.cancel}"       th:value="cancel"></button>
+    <button type="submit" class="btn btn-primary"   name="action" th:text="#{sw.finska.admin.button.update.round}"       th:value="update"></button>
+    <button type="submit" class="btn btn-primary"   name="action" th:if="${round.numberOfMatches() == 0}"
+                                                                  th:text="#{sw.finska.admin.button.create.match.first}" th:value="create"></button>
+    <button type="submit" class="btn btn-secondary" name="action" th:text="#{sw.finska.admin.button.cancel}"             th:value="cancel"></button>
   </form>
-  <div th:each="match : ${matches}">
+  <div th:each="match, status : ${matches}">
     <hr/>
     <h2 th:text="#{sw.finska.admin.title.update.match(${match.key})}"></h2>
     <form method="post" th:action="@{/admin/edit/match/{number}(number=${match.key})}">
@@ -103,7 +104,9 @@
       </div>
       <input type="hidden" name="competition" th:value="${competition.id}">
       <input type="hidden" name="round" th:value="${round.key}">
-      <button type="submit" class="btn btn-primary" name="action" th:text="#{sw.finska.admin.button.update.match}" th:value="update"></button>
+      <button type="submit" class="btn btn-primary" name="action" th:text="#{sw.finska.admin.button.update.match(${match.key})}" th:value="update"></button>
+      <button type="submit" class="btn btn-primary" name="action" th:if="${status.last}"
+                                                                  th:text="#{sw.finska.admin.button.create.match.more}" th:value="create"></button>
     </form>
   </div>
 </div>
