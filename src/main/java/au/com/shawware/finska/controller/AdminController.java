@@ -165,15 +165,7 @@ public class AdminController extends AbstractController
         @RequestParam("competition") int competitionID, Model model)
         throws PersistenceException
     {
-        FinskaCompetition competition = mResultsService.getCompetition();
-        FinskaRound round = mResultsService.getRound(number);
-        model.addAttribute(VIEW_TITLE, "sw.finska.page.title.match.create");
-        model.addAttribute(VIEW_TITLE_ARG_ONE, competition.getKey());
-        model.addAttribute(VIEW_TITLE_ARG_TWO, number);
-        model.addAttribute(FRAGMENT_FILE_KEY, MATCH);
-        model.addAttribute(FRAGMENT_NAME_KEY, CREATE);
-        model.addAttribute(COMPETITION, competition);
-        model.addAttribute(ROUND, round);
+        prepareToCreateMatch(model, competitionID, number);
         return TEMPLATE;
     }
 
@@ -251,5 +243,47 @@ public class AdminController extends AbstractController
     {
         mMatchService.updateMatch(competitionID, round, number, winnerIds, fastWin);
         return redirectTo("/admin/edit/round/" + round);
+    }
+
+    /**
+     * Adds another match to the given round.
+     * 
+     * @param number the match number
+     * @param competitionID the competition ID
+     * @param roundNumber the round number
+     * @param model the model to update
+     * 
+     * @return The next page to display.
+     * 
+     * @throws PersistenceException error updating match
+     */
+    @PostMapping(value="/edit/match/{number}", params="action=create")
+    public String updateMatch(@PathVariable("number") int number,
+        @RequestParam("competition") int competitionID,
+        @RequestParam("round") int roundNumber, Model model)
+        throws PersistenceException
+    {
+        prepareToCreateMatch(model, competitionID, roundNumber);
+        return TEMPLATE;
+    }
+
+    /**
+     * Prepares the given model to add a new match to the given round.
+     * 
+     * @param model the model to update
+     * @param competitionID the competition ID
+     * @param roundNumber the round number (within the competition)
+     */
+    private void prepareToCreateMatch(Model model, int competitionID, int roundNumber)
+    {
+        FinskaCompetition competition = mResultsService.getCompetition();
+        FinskaRound round = mResultsService.getRound(roundNumber);
+        model.addAttribute(VIEW_TITLE, "sw.finska.page.title.match.create");
+        model.addAttribute(VIEW_TITLE_ARG_ONE, competition.getKey());
+        model.addAttribute(VIEW_TITLE_ARG_TWO, roundNumber);
+        model.addAttribute(FRAGMENT_FILE_KEY, MATCH);
+        model.addAttribute(FRAGMENT_NAME_KEY, CREATE);
+        model.addAttribute(COMPETITION, competition);
+        model.addAttribute(ROUND, round);
     }
 }
