@@ -81,7 +81,7 @@ public class AdminController extends AbstractController
     public ModelAndView createRound(
         @RequestParam("competition") int competitionID,
         @RequestParam("round-date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate roundDate,
-        @RequestParam("players") int[] playerIDs)
+        @RequestParam(name="players", required=false) int[] playerIDs)
         throws PersistenceException
     {
         FinskaRound round = mRoundService.createRound(competitionID, roundDate, playerIDs);
