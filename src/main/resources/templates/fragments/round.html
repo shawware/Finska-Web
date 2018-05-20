@@ -98,7 +98,7 @@
       <div class="form-group">
         <label class="form-check-label" for="fast-winners" th:text="#{sw.finska.admin.label.fastWin}"></label>
         <div class="form-check form-check-inline">
-          <input type="checkbox" class="form-check-input" name="fast-winners" th:checked="${match.hasFastWinner()}">
+          <input type="checkbox" class="form-check-input" name="fast-winners" th:checked="${match.isFastWin()}">
         </div>
       </div>
       <input type="hidden" name="competition" th:value="${competition.id}">
