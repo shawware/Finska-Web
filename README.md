@@ -10,6 +10,11 @@ Owner And Copyright Notice
 Copyright &copy; 2018 <a href="http://www.shawware.com.au/"
 	  title="shawware | software and services you can count on">shawware.com.au</a>
 
+UI Translators
+--------------
+
+Lauren Shaw - German
+
 Packages
 --------
 
