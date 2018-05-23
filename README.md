@@ -13,7 +13,8 @@ Copyright &copy; 2018 <a href="http://www.shawware.com.au/"
 UI Translators
 --------------
 
-Lauren Shaw - German
+German - Lauren Shaw, Australia
+Spanish - Bruno Quartara, Argentina
 
 Packages
 --------
