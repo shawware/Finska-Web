@@ -17,8 +17,8 @@
       <tr th:each="player : ${players}">
         <td th:text="${player.value.id}"></td>
         <td>
-          <a th:href="@{/admin/edit/player/{id}(id=${player.value.id})}"
-             th:title="#{sw.finska.link.edit.player(${player.value.id})}"
+          <a th:href="@{/admin/update/player/{id}(id=${player.value.id})}"
+             th:title="#{sw.finska.link.update.player(${player.value.id})}"
              th:text="${player.value.key}"></a>
         </td>
       </tr>
@@ -38,8 +38,8 @@
       <tr>
         <td th:text="${player.id}"></td>
         <td>
-          <a th:href="@{/admin/edit/player/{id}(id=${player.id})}"
-             th:title="#{sw.finska.link.edit.player(${player.id})}"
+          <a th:href="@{/admin/update/player/{id}(id=${player.id})}"
+             th:title="#{sw.finska.link.update.player(${player.id})}"
              th:text="${player.key}"></a>
         </td>
       </tr>
@@ -58,8 +58,8 @@
   </form>
 </div>
 
-<div th:fragment="edit">
-  <form method="post" th:action="@{/admin/edit/player/{id}(id=${player.id})}">
+<div th:fragment="update">
+  <form method="post" th:action="@{/admin/update/player/{id}(id=${player.id})}">
     <div class="form-group">
       <label for="name" th:text="#{sw.finska.admin.label.name}"></label>
       <input name="name" type="text" th:value="${player.key}">

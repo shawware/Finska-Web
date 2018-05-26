@@ -66,8 +66,8 @@
   </form>
 </div>
 
-<div th:fragment="edit">
-  <form method="post" th:action="@{/admin/edit/round/{number}(number=${round.key})}">
+<div th:fragment="update">
+  <form method="post" th:action="@{/admin/update/round/{number}(number=${round.key})}">
     <div class="form-group">
       <label for="round-date" th:text="#{sw.finska.admin.label.datePlayed}"></label>
       <input name="round-date" type="date" th:value="${round.roundDate.toString()}">
@@ -88,7 +88,7 @@
   <div th:each="match, status : ${matches}">
     <hr/>
     <h2 th:text="#{sw.finska.admin.title.update.match(${match.key})}"></h2>
-    <form method="post" th:action="@{/admin/edit/match/{number}(number=${match.key})}">
+    <form method="post" th:action="@{/admin/update/match/{number}(number=${match.key})}">
       <div class="form-group">
         <label class="form-check-label" for="winners" th:text="#{sw.finska.admin.label.winners}"></label>
         <div th:each="player : ${round.players}" class="form-check form-check-inline">

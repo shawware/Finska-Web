@@ -59,8 +59,8 @@ public abstract class AbstractController
     protected static final String DISPLAY = "display";
     /** The key used for the create operation. */
     protected static final String CREATE = "create";
-    /** The key used for the edit operation. */
-    protected static final String EDIT = "edit";
+    /** The key used for the update operation. */
+    protected static final String UPDATE = "update";
 
     /** The home end point. */
     protected static final String HOME = "/";
