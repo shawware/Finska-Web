@@ -20,6 +20,7 @@ import au.com.shawware.compadmin.scoring.EntrantResult;
 import au.com.shawware.finska.entity.FinskaCompetition;
 import au.com.shawware.finska.entity.Player;
 import au.com.shawware.finska.service.DataService;
+import au.com.shawware.util.persistence.PersistenceException;
 
 /**
  * Displays competition data.
@@ -137,11 +138,14 @@ public class DisplayController extends AbstractController
      * @param model the model to add data to
      * 
      * @return The template name.
+     * 
+     * @throws PersistenceException error loading players
      */
     @GetMapping("/players")
     public String players(Model model)
+        throws PersistenceException
     {
-        Map<Integer, Player> players = mResultsService.getPlayers();
+        Map<Integer, Player> players = mPlayerService.getPlayers();
         model.addAttribute(VIEW_TITLE, "sw.finska.page.title.players");
         model.addAttribute(PLAYERS, players);
         model.addAttribute(FRAGMENT_FILE_KEY, PLAYER);

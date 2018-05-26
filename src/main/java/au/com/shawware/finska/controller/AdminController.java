@@ -98,11 +98,14 @@ public class AdminController extends AbstractController
      * @param model the model to add data to
      * 
      * @return The template name.
+     * 
+     * @throws PersistenceException error retrieving player
      */
     @GetMapping("/update/player/{id}")
     public String updatePlayer(@PathVariable("id") int id, Model model)
+        throws PersistenceException
     {
-        Player player = mResultsService.getPlayer(id);
+        Player player = mPlayerService.getPlayer(id);
         model.addAttribute(VIEW_TITLE, "sw.finska.page.title.player.update");
         model.addAttribute(VIEW_TITLE_ARG_ONE, player.getId());
         model.addAttribute(FRAGMENT_FILE_KEY, PLAYER);
