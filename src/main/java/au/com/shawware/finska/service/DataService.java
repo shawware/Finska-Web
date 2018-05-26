@@ -71,4 +71,12 @@ public class DataService
     {
         return mServices.getMatchService();
     }
+
+    /**
+     * @return The player service.
+     */
+    public PlayerService getPlayerService()
+    {
+        return mServices.getPlayerService();
+    }
 }

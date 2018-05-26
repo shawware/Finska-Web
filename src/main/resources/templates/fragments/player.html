@@ -16,7 +16,11 @@
     <tbody>
       <tr th:each="player : ${players}">
         <td th:text="${player.value.id}"></td>
-        <td th:text="${player.value.key}"></td>
+        <td>
+          <a th:href="@{/admin/edit/player/{id}(id=${player.value.id})}"
+             th:title="#{sw.finska.link.edit.player(${player.value.id})}"
+             th:text="${player.value.key}"></a>
+        </td>
       </tr>
     </tbody>
   </table>
@@ -33,10 +37,36 @@
     <tbody>
       <tr>
         <td th:text="${player.id}"></td>
-        <td th:text="${player.key}"></td>
+        <td>
+          <a th:href="@{/admin/edit/player/{id}(id=${player.id})}"
+             th:title="#{sw.finska.link.edit.player(${player.id})}"
+             th:text="${player.key}"></a>
+        </td>
       </tr>
     </tbody>
   </table>
+</div>
+
+<div th:fragment="create">
+  <form method="post" th:action="@{/admin/create/player}">
+    <div class="form-group">
+      <label for="name" th:text="#{sw.finska.admin.label.name}"></label>
+      <input name="name" type="text">
+    </div>
+    <button type="submit" class="btn btn-primary"   name="action" th:text="#{sw.finska.admin.button.create.player}" th:value="create"></button>
+    <button type="submit" class="btn btn-secondary" name="action" th:text="#{sw.finska.admin.button.cancel}" th:value="cancel"></button>
+  </form>
+</div>
+
+<div th:fragment="edit">
+  <form method="post" th:action="@{/admin/edit/player/{id}(id=${player.id})}">
+    <div class="form-group">
+      <label for="name" th:text="#{sw.finska.admin.label.name}"></label>
+      <input name="name" type="text" th:value="${player.key}">
+    </div>
+    <button type="submit" class="btn btn-primary"   name="action" th:text="#{sw.finska.admin.button.update.player}" th:value="update"></button>
+    <button type="submit" class="btn btn-secondary" name="action" th:text="#{sw.finska.admin.button.cancel}" th:value="cancel"></button>
+  </form>
 </div>
 
 </body>

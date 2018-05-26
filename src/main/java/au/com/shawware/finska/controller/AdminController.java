@@ -23,6 +23,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import au.com.shawware.finska.entity.FinskaCompetition;
 import au.com.shawware.finska.entity.FinskaRound;
+import au.com.shawware.finska.entity.Player;
 import au.com.shawware.finska.service.DataService;
 import au.com.shawware.util.persistence.PersistenceException;
 
@@ -33,7 +34,7 @@ import au.com.shawware.util.persistence.PersistenceException;
  */
 @Controller
 @RequestMapping("/admin")
-@SuppressWarnings({ "nls", "boxing" })
+@SuppressWarnings({ "nls", "boxing", "static-method" })
 public class AdminController extends AbstractController
 {
     /**
@@ -44,6 +45,105 @@ public class AdminController extends AbstractController
     public AdminController(DataService dataService)
     {
         super(dataService);
+    }
+
+    /**
+     * Displays a template for creating a new player.
+     * 
+     * @param model the model to add data to
+     * 
+     * @return The template name.
+     */
+    @GetMapping("/create/player")
+    public String newPlayer(Model model)
+    {
+        model.addAttribute(VIEW_TITLE, "sw.finska.page.title.player.create");
+        model.addAttribute(FRAGMENT_FILE_KEY, PLAYER);
+        model.addAttribute(FRAGMENT_NAME_KEY, CREATE);
+        return TEMPLATE;
+    }
+
+    /**
+     * Creates a new player.
+     * 
+     * @param name the new player's name
+     * 
+     * @return The next page to display.
+     * 
+     * @throws PersistenceException error creating player
+     */
+    @PostMapping(value="/create/player", params="action=create")
+    public ModelAndView createPlayer(@RequestParam("name") String name)
+        throws PersistenceException
+    {
+        mPlayerService.createPlayer(name);
+        return redirectTo("/display/players");
+    }
+
+    /**
+     * Cancels the creation of a new player.
+     * 
+     * @return The next page to display.
+     */
+    @PostMapping(value="/create/player", params="action=cancel")
+    public ModelAndView cancelCreatePlayer()
+    {
+        return redirectTo(HOME);
+    }
+
+    /**
+     * Displays the nominated player so that they can be edited.
+     * 
+     * @param id the player ID
+     * @param model the model to add data to
+     * 
+     * @return The template name.
+     */
+    @GetMapping("/edit/player/{id}")
+    public String editPlayer(@PathVariable("id") int id, Model model)
+    {
+        Player player = mResultsService.getPlayer(id);
+        model.addAttribute(VIEW_TITLE, "sw.finska.page.title.player.edit");
+        model.addAttribute(VIEW_TITLE_ARG_ONE, player.getId());
+        model.addAttribute(FRAGMENT_FILE_KEY, PLAYER);
+        model.addAttribute(FRAGMENT_NAME_KEY, EDIT);
+        model.addAttribute(PLAYER, player);
+        return TEMPLATE;
+    }
+
+    /**
+     * Updates the nominated player with the submitted data.
+     * 
+     * @param id the player ID
+     * @param name the player's updated name
+     * 
+     * @return The next page to display.
+     * 
+     * @throws PersistenceException error updating player
+     */
+    @PostMapping(value="/edit/player/{id}", params="action=update")
+    public ModelAndView updatePlayer(@PathVariable("id") int id, @RequestParam("name") String name)
+        throws PersistenceException
+    {
+        mPlayerService.updatePlayer(id, name);
+        return redirectTo("/display/players");
+    }
+
+    /**
+     * Cancels the update of a player.
+     * 
+     * @param id the player ID
+     * @param name the player's updated name
+     * 
+     * @return The next page to display.
+     * 
+     * @throws PersistenceException error updating player
+     */
+    @PostMapping(value="/edit/player/{id}", params="action=cancel")
+    public ModelAndView cancelUpdatePlayer(@PathVariable("id") int id, @RequestParam("name") String name)
+        throws PersistenceException
+    {
+        return redirectTo("/display/players");
     }
 
     /**
@@ -58,7 +158,7 @@ public class AdminController extends AbstractController
     {
         FinskaCompetition competition = mResultsService.getCompetition();
         model.addAttribute(VIEW_TITLE, "sw.finska.page.title.round.create");
-        model.addAttribute(VIEW_TITLE_ARG_ONE, competition.getKey() );
+        model.addAttribute(VIEW_TITLE_ARG_ONE, competition.getKey());
         model.addAttribute(FRAGMENT_FILE_KEY, ROUND);
         model.addAttribute(FRAGMENT_NAME_KEY, CREATE);
         model.addAttribute(COMPETITION, competition);

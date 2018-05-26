@@ -13,6 +13,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import au.com.shawware.finska.service.DataService;
 import au.com.shawware.finska.service.MatchService;
+import au.com.shawware.finska.service.PlayerService;
 import au.com.shawware.finska.service.ResultsService;
 import au.com.shawware.finska.service.RoundService;
 
@@ -73,6 +74,8 @@ public abstract class AbstractController
     protected final RoundService mRoundService;
     /** The derived match service. */
     protected final MatchService mMatchService;
+    /** The derived player service. */
+    protected final PlayerService mPlayerService;
 
     /**
      * Constructs a new controller.
@@ -85,6 +88,7 @@ public abstract class AbstractController
         mResultsService = dataService.getResultsService();
         mRoundService   = dataService.getRoundService();
         mMatchService   = dataService.getMatchService();
+        mPlayerService  = dataService.getPlayerService();
     }
 
     /**
