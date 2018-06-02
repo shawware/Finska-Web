@@ -48,7 +48,7 @@
 </div>
 
 <div th:fragment="create">
-  <form method="post" th:action="@{/admin/create/round}">
+  <form method="post" th:action="@{/admin/create/round/{id}(id=${competition.id})}">
     <div class="form-group">
       <label for="round-date" th:text="#{sw.finska.admin.label.datePlayed}"></label>
       <input name="round-date" type="date" th:value="${date.toString()}">
@@ -60,7 +60,6 @@
           th:value="${player.value.id}" th:text="${player.value.key}">
       </div>
     </div>
-    <input type="hidden" name="competition" th:value="${competition.id}">
     <button type="submit" class="btn btn-primary"   name="action" th:text="#{sw.finska.admin.button.create.round}" th:value="create"></button>
     <button type="submit" class="btn btn-secondary" name="action" th:text="#{sw.finska.admin.button.cancel}" th:value="cancel"></button>
   </form>

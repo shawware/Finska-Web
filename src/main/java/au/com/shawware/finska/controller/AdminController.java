@@ -152,14 +152,16 @@ public class AdminController extends AbstractController
     /**
      * Displays a template for creating a new round.
      * 
+     * @param id the competition ID
      * @param model the model to add data to
      * 
      * @return The template name.
      */
-    @GetMapping("/create/round")
-    public String newRound(Model model)
+    @GetMapping("/create/round/{id}")
+    public String newRound(@PathVariable("id") int id,
+                           Model model)
     {
-        FinskaCompetition competition = mResultsService.getCompetition();
+        FinskaCompetition competition = mResultsService.getCompetition(id);
         model.addAttribute(VIEW_TITLE, "sw.finska.page.title.round.create");
         model.addAttribute(VIEW_TITLE_ARG_ONE, competition.getKey());
         model.addAttribute(FRAGMENT_FILE_KEY, ROUND);
@@ -173,7 +175,7 @@ public class AdminController extends AbstractController
     /**
      * Creates a new round.
      * 
-     * @param competitionID the competition ID
+     * @param id the competition ID
      * @param roundDate the new round's date
      * @param playerIDs the IDs of the players participating in this round
      * 
@@ -181,15 +183,14 @@ public class AdminController extends AbstractController
      * 
      * @throws PersistenceException error creating round
      */
-    @PostMapping(value="/create/round", params="action=create")
-    public ModelAndView createRound(
-        @RequestParam("competition") int competitionID,
-        @RequestParam("round-date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate roundDate,
-        @RequestParam(name="players", required=false) int[] playerIDs)
+    @PostMapping(value="/create/round/{id}", params="action=create")
+    public ModelAndView createRound(@PathVariable("id") int id,
+                                    @RequestParam("round-date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate roundDate,
+                                    @RequestParam(name="players", required=false) int[] playerIDs)
         throws PersistenceException
     {
-        FinskaRound round = mRoundService.createRound(competitionID, roundDate, playerIDs);
-        return redirectTo("/admin/update/round/" + round.getKey());
+        FinskaRound round = mRoundService.createRound(id, roundDate, playerIDs);
+        return redirectTo("/admin/update/round/" + id + "/" + round.getKey());
     }
 
     /**
@@ -395,7 +396,7 @@ public class AdminController extends AbstractController
         throws PersistenceException
     {
         mMatchService.createMatch(competitionID, number, winnerIds, fastWin);
-        return redirectTo("/admin/update/round/" + number);
+        return redirectTo("/admin/update/round/" + competitionID + "/" + number);
     }
 
     /**
@@ -411,7 +412,7 @@ public class AdminController extends AbstractController
             @RequestParam("competition") int competitionID,
             @RequestParam("round") int number)
     {
-        return redirectTo("/admin/update/round/" + number);
+        return redirectTo("/admin/update/round/" + competitionID + "/" + number);
     }
 
     /**
