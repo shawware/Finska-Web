@@ -57,6 +57,14 @@ public class DataService
     }
 
     /**
+     * @return The competition service.
+     */
+    public CompetitionService getCompetitionService()
+    {
+        return mServices.getCompetitionService();
+    }
+
+    /**
      * @return The round service.
      */
     public RoundService getRoundService()

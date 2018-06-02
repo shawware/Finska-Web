@@ -57,5 +57,56 @@
   </table>
 </div>
 
+<div th:fragment="update">
+  <form method="post" th:action="@{/admin/update/competition/{id}(id=${competition.id})}">
+    <div class="form-group">
+      <label for="name" th:text="#{sw.finska.admin.label.name}"></label>
+      <input name="name" type="text" th:value="${competition.key}">
+    </div>
+    <div class="form-group">
+      <label for="start-date" th:text="#{sw.finska.admin.label.startDate}"></label>
+      <input name="start-date" type="date" th:value="${competition.startDate.toString()}">
+    </div>
+    <div class="form-group">
+      <label class="form-check-label" for="players" th:text="#{sw.finska.admin.label.players}"></label>
+      <div th:each="player : ${players}" class="form-check form-check-inline">
+        <input type="checkbox" class="form-check-input" name="players"
+          th:checked="${checked.contains(player.value.id)}" th:value="${player.value.id}" th:text="${player.value.key}">
+      </div>
+    </div>
+    <button type="submit" class="btn btn-primary"   name="action" th:text="#{sw.finska.admin.button.update.competition}" th:value="update"></button>
+    <button type="submit" class="btn btn-primary"   name="action" th:if="${competition.numberOfRounds() == 0}"
+                                                                  th:text="#{sw.finska.admin.button.create.round.first}" th:value="create"></button>
+    <button type="submit" class="btn btn-secondary" name="action" th:text="#{sw.finska.admin.button.done}"               th:value="done"></button>
+  </form>
+  <div th:if="${competition.numberOfRounds() > 0}">
+    <hr/>
+    <table class="table table-bordered table-striped">
+      <thead class="thead-dark">
+        <tr>
+          <th th:text="#{sw.finska.round}"></th>
+          <th th:text="#{sw.finska.heading.date}"></th>
+          <th th:text="#{sw.finska.heading.numberOfMatches}"></th>
+          <th th:text="#{sw.finska.heading.numberOfPlayers}"></th>
+          <th th:text="#{sw.finska.heading.actions}"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr th:each="round : ${rounds}">
+          <td th:text="${round.key}"></td>
+          <td th:text="${round.roundDate}"></td>
+          <td th:text="${round.numberOfMatches()}"></td>
+          <td th:text="${round.getPlayers().size()}"></td>
+          <td>
+            <a th:href="@{/admin/update/round/{id}/{number}(id=${competition.id},number=${round.key})}"
+               th:title="#{sw.finska.link.round.update.title(${round.key})}"
+               th:text="#{sw.finska.link.update}"></a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
 </body>
 </html>

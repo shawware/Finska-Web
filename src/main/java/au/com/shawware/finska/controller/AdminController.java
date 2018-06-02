@@ -204,17 +204,80 @@ public class AdminController extends AbstractController
     }
 
     /**
+     * Displays the nominated competition so that it can be updated.
+     * 
+     * @param id the competition ID
+     * @param model the model to add data to
+     * 
+     * @return The template name.
+     * 
+     * @throws PersistenceException error loading data
+     */
+    @GetMapping("/update/competition/{id}")
+    public String updateCompetition(@PathVariable("id") int id, Model model)
+        throws PersistenceException
+    {
+        FinskaCompetition competition = mResultsService.getCompetition(id);
+        Set<Integer> ids = competition.getEntrantIds();
+        model.addAttribute(VIEW_TITLE, "sw.finska.page.title.competition.update");
+        model.addAttribute(VIEW_TITLE_ARG_ONE, competition.getKey());
+        model.addAttribute(FRAGMENT_FILE_KEY, COMPETITION);
+        model.addAttribute(FRAGMENT_NAME_KEY, UPDATE);
+        model.addAttribute(COMPETITION, competition);
+        model.addAttribute("checked", ids);
+        model.addAttribute(ROUNDS, competition.getRounds());
+        model.addAttribute(PLAYERS, mPlayerService.getPlayers());
+        return TEMPLATE;
+    }
+
+    /**
+     * Updates the nominated competition with the submitted data.
+     * 
+     * @param id the competition ID
+     * @param name the updated name
+     * @param startDate the updated start date
+     * @param players the players selected for this competition (updated)
+     * 
+     * @return The next page to display.
+     * 
+     * @throws PersistenceException error updating round
+     */
+    @PostMapping(value="/update/competition/{id}", params="action=update")
+    public ModelAndView updateCompetition(@PathVariable("id") int id,
+        @RequestParam("name") String name,
+        @RequestParam("start-date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
+        @RequestParam("players") int[] players)
+        throws PersistenceException
+    {
+        mCompetitionService.updateCompetition(id, name, startDate, players);
+        return redirectTo("/admin/update/competition/" + id);
+    }
+
+    /**
+     * Cancels the updating of a competition.
+     * 
+     * @return The next page to display.
+     */
+    @PostMapping(value="/update/competition/{id}", params="action=done")
+    public ModelAndView cancelUpdateCompetition()
+    {
+        return redirectTo("/display/competitions");
+    }
+
+    /**
      * Displays the nominated round so that it can be updated.
      * 
+     * @param id the competition ID
      * @param number the round number
      * @param model the model to add data to
      * 
      * @return The template name.
      */
-    @GetMapping("/update/round/{number}")
-    public String updateRound(@PathVariable("number") int number, Model model)
+    @GetMapping("/update/round/{id}/{number}")
+    public String updateRound(@PathVariable("id") int id,
+                              @PathVariable("number") int number, Model model)
     {
-        FinskaCompetition competition = mResultsService.getCompetition();
+        FinskaCompetition competition = mResultsService.getCompetition(id);
         FinskaRound round = mResultsService.getRound(number);
         Set<Integer> ids = round.getPlayerIds();
         model.addAttribute(VIEW_TITLE, "sw.finska.page.title.round.update");

@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.servlet.ModelAndView;
 
+import au.com.shawware.finska.service.CompetitionService;
 import au.com.shawware.finska.service.DataService;
 import au.com.shawware.finska.service.MatchService;
 import au.com.shawware.finska.service.PlayerService;
@@ -72,6 +73,8 @@ public abstract class AbstractController
     protected final DataService mDataService;
     /** The derived result service. */
     protected final ResultsService mResultsService;
+    /** The derived competition service. */
+    protected final CompetitionService mCompetitionService;
     /** The derived round service. */
     protected final RoundService mRoundService;
     /** The derived match service. */
@@ -86,11 +89,12 @@ public abstract class AbstractController
      */
     public AbstractController(DataService dataService)
     {
-        mDataService    = dataService;
-        mResultsService = dataService.getResultsService();
-        mRoundService   = dataService.getRoundService();
-        mMatchService   = dataService.getMatchService();
-        mPlayerService  = dataService.getPlayerService();
+        mDataService        = dataService;
+        mResultsService     = dataService.getResultsService();
+        mCompetitionService = dataService.getCompetitionService();
+        mRoundService       = dataService.getRoundService();
+        mMatchService       = dataService.getMatchService();
+        mPlayerService      = dataService.getPlayerService();
     }
 
     /**
