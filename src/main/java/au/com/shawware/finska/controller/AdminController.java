@@ -365,7 +365,7 @@ public class AdminController extends AbstractController
                            @PathVariable("roundNumber") int roundNumber,
                            Model model)
     {
-        FinskaCompetition competition = mResultsService.getCompetition();
+        FinskaCompetition competition = mResultsService.getCompetition(id);
         FinskaRound round = mResultsService.getRound(roundNumber);
         model.addAttribute(VIEW_TITLE, "sw.finska.page.title.match.create");
         model.addAttribute(VIEW_TITLE_ARG_ONE, competition.getKey());
