@@ -67,7 +67,7 @@
 </div>
 
 <div th:fragment="update">
-  <form method="post" th:action="@{/admin/update/round/{number}(number=${round.key})}">
+  <form method="post" th:action="@{/admin/update/round/{id}/{number}(id=${competition.id},number=${round.key})}">
     <div class="form-group">
       <label for="round-date" th:text="#{sw.finska.admin.label.datePlayed}"></label>
       <input name="round-date" type="date" th:value="${round.roundDate.toString()}">
@@ -79,7 +79,6 @@
           th:checked="${checked.contains(player.value.id)}" th:value="${player.value.id}" th:text="${player.value.key}">
       </div>
     </div>
-    <input type="hidden" name="competition" th:value="${competition.id}">
     <button type="submit" class="btn btn-primary"   name="action" th:text="#{sw.finska.admin.button.update.round}"       th:value="update"></button>
     <button type="submit" class="btn btn-primary"   name="action" th:if="${round.numberOfMatches() == 0}"
                                                                   th:text="#{sw.finska.admin.button.create.match.first}" th:value="create"></button>

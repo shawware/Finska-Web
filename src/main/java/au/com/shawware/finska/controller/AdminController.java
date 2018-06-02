@@ -296,8 +296,8 @@ public class AdminController extends AbstractController
     /**
      * Updates the nominated round with the submitted data.
      * 
+     * @param id the competition ID
      * @param number the round number
-     * @param competitionID the competition ID
      * @param players the players selected for this round (updated)
      * @param roundDate the updated round date
      * 
@@ -305,34 +305,35 @@ public class AdminController extends AbstractController
      * 
      * @throws PersistenceException error updating round
      */
-    @PostMapping(value="/update/round/{number}", params="action=update")
-    public ModelAndView updateRound(@PathVariable("number") int number,
-        @RequestParam("competition") int competitionID,
-        @RequestParam("players") int[] players,
-        @RequestParam("round-date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate roundDate)
+    @PostMapping(value="/update/round/{id}/{number}", params="action=update")
+    public ModelAndView updateRound(@PathVariable("id") int id,
+                                    @PathVariable("number") int number,
+                                    @RequestParam("players") int[] players,
+                                    @RequestParam("round-date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate roundDate)
         throws PersistenceException
     {
-        mRoundService.updateRound(competitionID, number, roundDate, players);
-        return redirectTo("/admin/update/round/" + number);
+        mRoundService.updateRound(id, number, roundDate, players);
+        return redirectTo("/admin/update/round/" + id + "/" + number);
     }
 
     /**
      * Commences the creation of a new match for the nominated round.
      * 
+     * @param id the competition ID
      * @param number the round number
-     * @param competitionID the competition ID
      * @param model the model to add data to
      * 
      * @return The next page to display.
      * 
      * @throws PersistenceException error accessing data
      */
-    @PostMapping(value="/update/round/{number}", params="action=create")
-    public ModelAndView createMatch(@PathVariable("number") int number,
-        @RequestParam("competition") int competitionID, ModelMap model)
+    @PostMapping(value="/update/round/{id}/{number}", params="action=create")
+    public ModelAndView createMatch(@PathVariable("id") int id,
+                                    @PathVariable("number") int number,
+                                    ModelMap model)
         throws PersistenceException
     {
-        model.addAttribute(COMPETITION, competitionID);
+        model.addAttribute(COMPETITION, id);
         model.addAttribute(ROUND, number);
         return redirectTo("/admin/create/match", model);
     }
@@ -342,7 +343,7 @@ public class AdminController extends AbstractController
      * 
      * @return The next page to display.
      */
-    @PostMapping(value="/update/round/{number}", params="action=done")
+    @PostMapping(value="/update/round/{id}/{number}", params="action=done")
     public ModelAndView cancelUpdateRound()
     {
         return redirectTo(HOME);
