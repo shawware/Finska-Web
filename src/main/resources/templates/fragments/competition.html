@@ -5,13 +5,38 @@
 </head>
 <body>
 
+<div th:fragment="competitions">
+  <table th:if="${competitions.size() > 0}" class="table table-bordered table-striped">
+    <thead class="thead-dark">
+      <tr>
+        <th th:text="#{sw.finska.competition}"></th>
+        <th th:text="#{sw.finska.heading.startDate}"></th>
+        <th th:text="#{sw.finska.heading.numberOfRounds}"></th>
+        <th th:text="#{sw.finska.heading.numberOfPlayers}"></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr th:each="competition : ${competitions}">
+        <td>
+          <a th:href="@{/display/competition/{id}(id=${competition.id})}"
+             th:title="#{sw.finska.link.competition.title(${competition.key})}"
+             th:text="${competition.key}"></a>
+        </td>
+        <td th:text="${competition.startDate}"></td>
+        <td th:text="${competition.numberOfRounds()}"></td>
+        <td th:text="${competition.getEntrantIds().size()}"></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
 <div th:fragment="competition">
   <table th:if="${competition.numberOfRounds() > 0}" class="table table-bordered table-striped">
     <thead class="thead-dark">
       <tr>
         <th th:text="#{sw.finska.round}"></th>
         <th th:text="#{sw.finska.heading.date}"></th>
-        <th th:text="#{sw.finska.heading.matches}"></th>
+        <th th:text="#{sw.finska.heading.numberOfMatches}"></th>
         <th th:text="#{sw.finska.heading.players}"></th>
       </tr>
     </thead>

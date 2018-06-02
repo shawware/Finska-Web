@@ -174,16 +174,35 @@ public class DisplayController extends AbstractController
     }
 
     /**
-     * Displays the current competition.
+     * Displays the list of competition.
      * 
      * @param model the model to add data to
      * 
      * @return The template name.
      */
-    @GetMapping("/competition")
-    public String competition(Model model)
+    @GetMapping("/competitions")
+    public String competitions(Model model)
     {
-        FinskaCompetition competition = mResultsService.getCompetition();
+        List<FinskaCompetition> competitions = mResultsService.getCompetitions();
+        model.addAttribute(VIEW_TITLE, "sw.finska.page.title.competitions");
+        model.addAttribute(COMPETITIONS, competitions);
+        model.addAttribute(FRAGMENT_FILE_KEY, COMPETITION);
+        model.addAttribute(FRAGMENT_NAME_KEY, COMPETITIONS);
+        return TEMPLATE;
+    }
+
+    /**
+     * Displays a specific competition.
+     * 
+     * @param id the competition ID
+     * @param model the model to add data to
+     * 
+     * @return The template name.
+     */
+    @GetMapping("/competition/{id}")
+    public String competition(@PathVariable("id") int id, Model model)
+    {
+        FinskaCompetition competition = mResultsService.getCompetition(id);
         model.addAttribute(VIEW_TITLE, "sw.finska.page.title.competition");
         model.addAttribute(VIEW_TITLE_ARG_ONE, competition.getKey());
         model.addAttribute(COMPETITION, competition);

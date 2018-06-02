@@ -38,6 +38,8 @@ public abstract class AbstractController
     /** The name of the attribute that identifies the second argument to suppled to the view title. */
     protected static final String VIEW_TITLE_ARG_TWO = "titleArgTwo";
 
+    /** The name of the attribute / file key that is used for all competitions. */
+    protected static final String COMPETITIONS = "competitions";
     /** The name of the attribute / file key that is used for a single competition. */
     protected static final String COMPETITION = "competition";
     /** The name of the attribute / file key that is used for a leader board. */
