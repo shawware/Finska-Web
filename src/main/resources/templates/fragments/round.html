@@ -66,7 +66,7 @@
 </div>
 
 <div th:fragment="update">
-  <form method="post" th:action="@{/admin/update/round/{id}/{number}(id=${competition.id},number=${round.key})}">
+  <form method="post" th:action="@{/admin/update/round/{id}/{roundNumber}(id=${competition.id},roundNumber=${round.key})}">
     <div class="form-group">
       <label for="round-date" th:text="#{sw.finska.admin.label.datePlayed}"></label>
       <input name="round-date" type="date" th:value="${round.roundDate.toString()}">
@@ -86,7 +86,7 @@
   <div th:each="match, status : ${matches}">
     <hr/>
     <h2 th:text="#{sw.finska.admin.title.update.match(${match.key})}"></h2>
-    <form method="post" th:action="@{/admin/update/match/{number}(number=${match.key})}">
+    <form method="post" th:action="@{/admin/update/match/{id}/{roundNumber}/{matchNumber}(id=${competition.id},roundNumber=${round.key},matchNumber=${match.key})}">
       <div class="form-group">
         <label class="form-check-label" for="winners" th:text="#{sw.finska.admin.label.winners}"></label>
         <div th:each="player : ${round.players}" class="form-check form-check-inline">
@@ -100,8 +100,6 @@
           <input type="checkbox" class="form-check-input" name="fast-winners" th:checked="${match.isFastWin()}">
         </div>
       </div>
-      <input type="hidden" name="competition" th:value="${competition.id}">
-      <input type="hidden" name="round" th:value="${round.key}">
       <button type="submit" class="btn btn-primary" name="action" th:text="#{sw.finska.admin.button.update.match(${match.key})}" th:value="update"></button>
       <button type="submit" class="btn btn-primary" name="action" th:if="${status.last}"
                                                                   th:text="#{sw.finska.admin.button.create.match.more}" th:value="create"></button>

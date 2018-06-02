@@ -98,7 +98,7 @@
           <td th:text="${round.numberOfMatches()}"></td>
           <td th:text="${round.getPlayers().size()}"></td>
           <td>
-            <a th:href="@{/admin/update/round/{id}/{number}(id=${competition.id},number=${round.key})}"
+            <a th:href="@{/admin/update/round/{id}/{roundNumber}(id=${competition.id},roundNumber=${round.key})}"
                th:title="#{sw.finska.link.round.update.title(${round.key})}"
                th:text="#{sw.finska.link.update}"></a>
           </td>

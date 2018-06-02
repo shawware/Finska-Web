@@ -6,7 +6,7 @@
 <body>
 
 <div th:fragment="create">
-  <form method="post" th:action="@{/admin/create/match}">
+  <form method="post" th:action="@{/admin/create/match/{id}/{roundNumber}(id=${competition.id},roundNumber=${round.key})}">
     <div class="form-group">
       <label class="form-check-label" for="winners" th:text="#{sw.finska.admin.label.winners}"></label>
       <div th:each="player : ${round.players}" class="form-check form-check-inline">
@@ -19,8 +19,6 @@
         <input type="checkbox" class="form-check-input" name="fast-winners">
       </div>
     </div>
-    <input type="hidden" name="competition" th:value="${competition.id}">
-    <input type="hidden" name="round" th:value="${round.key}">
     <button type="submit" class="btn btn-primary"   name="action" th:text="#{sw.finska.admin.button.create.match}" th:value="create"></button>
     <button type="submit" class="btn btn-secondary" name="action" th:text="#{sw.finska.admin.button.cancel}"       th:value="cancel"></button>
   </form>
