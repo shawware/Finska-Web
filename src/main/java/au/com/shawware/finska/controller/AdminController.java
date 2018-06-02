@@ -150,61 +150,6 @@ public class AdminController extends AbstractController
     }
 
     /**
-     * Displays a template for creating a new round.
-     * 
-     * @param id the competition ID
-     * @param model the model to add data to
-     * 
-     * @return The template name.
-     */
-    @GetMapping("/create/round/{id}")
-    public String newRound(@PathVariable("id") int id,
-                           Model model)
-    {
-        FinskaCompetition competition = mResultsService.getCompetition(id);
-        model.addAttribute(VIEW_TITLE, "sw.finska.page.title.round.create");
-        model.addAttribute(VIEW_TITLE_ARG_ONE, competition.getKey());
-        model.addAttribute(FRAGMENT_FILE_KEY, ROUND);
-        model.addAttribute(FRAGMENT_NAME_KEY, CREATE);
-        model.addAttribute(COMPETITION, competition);
-        model.addAttribute(PLAYERS, mResultsService.getPlayers());
-        model.addAttribute("date", LocalDate.now());
-        return TEMPLATE;
-    }
-
-    /**
-     * Creates a new round.
-     * 
-     * @param id the competition ID
-     * @param roundDate the new round's date
-     * @param playerIDs the IDs of the players participating in this round
-     * 
-     * @return The next page to display.
-     * 
-     * @throws PersistenceException error creating round
-     */
-    @PostMapping(value="/create/round/{id}", params="action=create")
-    public ModelAndView createRound(@PathVariable("id") int id,
-                                    @RequestParam("round-date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate roundDate,
-                                    @RequestParam(name="players", required=false) int[] playerIDs)
-        throws PersistenceException
-    {
-        FinskaRound round = mRoundService.createRound(id, roundDate, playerIDs);
-        return redirectTo("/admin/update/round/" + id + "/" + round.getKey());
-    }
-
-    /**
-     * Cancels the creation of a new round.
-     * 
-     * @return The next page to display.
-     */
-    @PostMapping(value="/create/round", params="action=cancel")
-    public ModelAndView cancelCreateRound()
-    {
-        return redirectTo(HOME);
-    }
-
-    /**
      * Displays the nominated competition so that it can be updated.
      * 
      * @param id the competition ID
@@ -263,6 +208,61 @@ public class AdminController extends AbstractController
     public ModelAndView cancelUpdateCompetition()
     {
         return redirectTo("/display/competitions");
+    }
+
+    /**
+     * Displays a template for creating a new round.
+     * 
+     * @param id the competition ID
+     * @param model the model to add data to
+     * 
+     * @return The template name.
+     */
+    @GetMapping("/create/round/{id}")
+    public String newRound(@PathVariable("id") int id,
+                           Model model)
+    {
+        FinskaCompetition competition = mResultsService.getCompetition(id);
+        model.addAttribute(VIEW_TITLE, "sw.finska.page.title.round.create");
+        model.addAttribute(VIEW_TITLE_ARG_ONE, competition.getKey());
+        model.addAttribute(FRAGMENT_FILE_KEY, ROUND);
+        model.addAttribute(FRAGMENT_NAME_KEY, CREATE);
+        model.addAttribute(COMPETITION, competition);
+        model.addAttribute(PLAYERS, mResultsService.getPlayers());
+        model.addAttribute("date", LocalDate.now());
+        return TEMPLATE;
+    }
+
+    /**
+     * Creates a new round.
+     * 
+     * @param id the competition ID
+     * @param roundDate the new round's date
+     * @param playerIDs the IDs of the players participating in this round
+     * 
+     * @return The next page to display.
+     * 
+     * @throws PersistenceException error creating round
+     */
+    @PostMapping(value="/create/round/{id}", params="action=create")
+    public ModelAndView createRound(@PathVariable("id") int id,
+                                    @RequestParam("round-date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate roundDate,
+                                    @RequestParam(name="players", required=false) int[] playerIDs)
+        throws PersistenceException
+    {
+        FinskaRound round = mRoundService.createRound(id, roundDate, playerIDs);
+        return redirectTo("/admin/update/round/" + id + "/" + round.getKey());
+    }
+
+    /**
+     * Cancels the creation of a new round.
+     * 
+     * @return The next page to display.
+     */
+    @PostMapping(value="/create/round", params="action=cancel")
+    public ModelAndView cancelCreateRound()
+    {
+        return redirectTo(HOME);
     }
 
     /**
