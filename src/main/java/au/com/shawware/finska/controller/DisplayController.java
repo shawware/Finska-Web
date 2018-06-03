@@ -119,7 +119,7 @@ public class DisplayController extends AbstractController
             model.addAttribute("spec", first.getResultSpecification());
             model.addAttribute(PLAYERS, mResultsService.getPlayers());
             model.addAttribute(COMPETITION, competition);
-            model.addAttribute(ROUNDS, mResultsService.getRounds());
+            model.addAttribute(ROUNDS, competition.getRounds());
             model.addAttribute("results", roundResults);
         }
         else
@@ -206,8 +206,8 @@ public class DisplayController extends AbstractController
         model.addAttribute(VIEW_TITLE, "sw.finska.page.title.competition");
         model.addAttribute(VIEW_TITLE_ARG_ONE, competition.getKey());
         model.addAttribute(COMPETITION, competition);
-        model.addAttribute(ROUNDS, mResultsService.getRounds());
-        model.addAttribute(PLAYERS, mResultsService.getPlayers());
+        model.addAttribute(ROUNDS, competition.getRounds());
+        model.addAttribute(PLAYERS, competition.getEntrants());
         model.addAttribute(FRAGMENT_FILE_KEY, COMPETITION);
         model.addAttribute(FRAGMENT_NAME_KEY, COMPETITION);
         return TEMPLATE;

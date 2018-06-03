@@ -57,7 +57,7 @@
       <label class="form-check-label" for="players" th:text="#{sw.finska.admin.label.players}"></label>
       <div th:each="player : ${players}" class="form-check form-check-inline">
         <input type="checkbox" class="form-check-input" name="players"
-          th:value="${player.value.id}" th:text="${player.value.key}">
+          th:value="${player.id}" th:text="${player.key}">
       </div>
     </div>
     <button type="submit" class="btn btn-primary"   name="action" th:text="#{sw.finska.admin.button.create.round}" th:value="create"></button>
@@ -75,7 +75,7 @@
       <label class="form-check-label" for="players" th:text="#{sw.finska.admin.label.players}"></label>
       <div th:each="player : ${players}" class="form-check form-check-inline">
         <input type="checkbox" class="form-check-input" name="players"
-          th:checked="${checked.contains(player.value.id)}" th:value="${player.value.id}" th:text="${player.value.key}">
+          th:checked="${checked.contains(player.id)}" th:value="${player.id}" th:text="${player.key}">
       </div>
     </div>
     <button type="submit" class="btn btn-primary"   name="action" th:text="#{sw.finska.admin.button.update.round}"       th:value="update"></button>

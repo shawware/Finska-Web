@@ -13,7 +13,6 @@ import java.util.Set;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -297,7 +296,7 @@ public class AdminController extends AbstractController
         model.addAttribute(FRAGMENT_FILE_KEY, ROUND);
         model.addAttribute(FRAGMENT_NAME_KEY, CREATE);
         model.addAttribute(COMPETITION, competition);
-        model.addAttribute(PLAYERS, mResultsService.getPlayers());
+        model.addAttribute(PLAYERS, competition.getEntrants());
         model.addAttribute("date", LocalDate.now());
         return TEMPLATE;
     }
@@ -326,12 +325,14 @@ public class AdminController extends AbstractController
     /**
      * Cancels the creation of a new round.
      * 
+     * @param id the competition ID
+     * 
      * @return The next page to display.
      */
-    @PostMapping(value="/create/round", params="action=cancel")
-    public ModelAndView cancelCreateRound()
+    @PostMapping(value="/create/round/{id}", params="action=cancel")
+    public ModelAndView cancelCreateRound(@PathVariable("id") int id)
     {
-        return redirectTo(HOME);
+        return redirectTo("/admin/update/competition/" + id);
     }
 
     /**
@@ -349,7 +350,7 @@ public class AdminController extends AbstractController
                               Model model)
     {
         FinskaCompetition competition = mResultsService.getCompetition(id);
-        FinskaRound round = mResultsService.getRound(roundNumber);
+        FinskaRound round = competition.getRound(roundNumber);
         Set<Integer> ids = round.getPlayerIds();
         model.addAttribute(VIEW_TITLE, "sw.finska.page.title.round.update");
         model.addAttribute(VIEW_TITLE_ARG_ONE, competition.getKey());
@@ -360,7 +361,7 @@ public class AdminController extends AbstractController
         model.addAttribute(ROUND, round);
         model.addAttribute("checked", ids);
         model.addAttribute(MATCHES, round.getMatches());
-        model.addAttribute(PLAYERS, mResultsService.getPlayers());
+        model.addAttribute(PLAYERS, competition.getEntrants());
         return TEMPLATE;
     }
 
@@ -392,32 +393,30 @@ public class AdminController extends AbstractController
      * 
      * @param id the competition ID
      * @param roundNumber the round number
-     * @param model the model to add data to
      * 
      * @return The next page to display.
      * 
      * @throws PersistenceException error accessing data
      */
-    @PostMapping(value="/update/round/{id}/{number}", params="action=create")
+    @PostMapping(value="/update/round/{id}/{roundNumber}", params="action=create")
     public ModelAndView createMatch(@PathVariable("id") int id,
-                                    @PathVariable("roundNumber") int roundNumber,
-                                    ModelMap model)
+                                    @PathVariable("roundNumber") int roundNumber)
         throws PersistenceException
     {
-        model.addAttribute(COMPETITION, id);
-        model.addAttribute(ROUND, roundNumber);
-        return redirectTo("/admin/create/match", model);
+        return redirectTo("/admin/create/match/" + id + "/" + roundNumber);
     }
 
     /**
      * Cancels the updating of a round.
      * 
+     * @param id the competition ID
+     * 
      * @return The next page to display.
      */
     @PostMapping(value="/update/round/{id}/{roundNumber}", params="action=done")
-    public ModelAndView cancelUpdateRound()
+    public ModelAndView cancelUpdateRound(@PathVariable("id") int id)
     {
-        return redirectTo(HOME);
+        return redirectTo("/admin/update/competition/" + id);
     }
 
     /**
@@ -435,7 +434,7 @@ public class AdminController extends AbstractController
                            Model model)
     {
         FinskaCompetition competition = mResultsService.getCompetition(id);
-        FinskaRound round = mResultsService.getRound(roundNumber);
+        FinskaRound round = competition.getRound(roundNumber);
         model.addAttribute(VIEW_TITLE, "sw.finska.page.title.match.create");
         model.addAttribute(VIEW_TITLE_ARG_ONE, competition.getKey());
         model.addAttribute(VIEW_TITLE_ARG_TWO, roundNumber);
@@ -515,7 +514,6 @@ public class AdminController extends AbstractController
      * @param id the competition ID
      * @param roundNumber the round number
      * @param matchNumber the match number
-     * @param model the model to update
      * 
      * @return The next page to display.
      * 
@@ -524,12 +522,9 @@ public class AdminController extends AbstractController
     @PostMapping(value="/update/match/{id}/{roundNumber}/{matchNumber}", params="action=create")
     public ModelAndView updateMatch(@PathVariable("id") int id,
                                     @PathVariable("roundNumber") int roundNumber,
-                                    @PathVariable("matchNumber") int matchNumber,
-                                    ModelMap model)
+                                    @PathVariable("matchNumber") int matchNumber)
         throws PersistenceException
     {
-        model.addAttribute(COMPETITION, id);
-        model.addAttribute(ROUND, roundNumber);
-        return redirectTo("/admin/create/match/" + id + "/" + roundNumber, model);
+        return redirectTo("/admin/create/match/" + id + "/" + roundNumber);
     }
 }
