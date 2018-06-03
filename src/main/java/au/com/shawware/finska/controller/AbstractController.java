@@ -8,7 +8,6 @@
 package au.com.shawware.finska.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.servlet.ModelAndView;
 
 import au.com.shawware.finska.service.CompetitionService;
@@ -100,32 +99,27 @@ public abstract class AbstractController
     /**
      * Returns a view that redirects the user to the given end point.
      * 
-     * @param endpoint the end point to redirect to
+     * @param rootEndpoint the root of end point to redirect to
+     * @param pathVariables the (optional) path variables to append to the root
      * 
      * @return The necessary view.
      */
-    protected final ModelAndView redirectTo(String endpoint)
-    {
-        return redirectTo(endpoint, null);
-    }
-
-
-    /**
-     * Returns a view that redirects the user to the given end point.
-     * 
-     * @param endpoint the end point to redirect to
-     * @param model the model attributes to include
-     * 
-     * @return The necessary view.
-     */
-    protected final ModelAndView redirectTo(String endpoint, ModelMap model)
+    protected final ModelAndView redirectTo(String rootEndpoint, int... pathVariables)
     {
         String safeEndpoint = "";
-        if (endpoint.charAt(0) != '/')
+        if (rootEndpoint.charAt(0) != '/')
         {
             safeEndpoint += "/";
         }
-        safeEndpoint += endpoint;
-        return new ModelAndView("redirect:" + safeEndpoint, model);
+        safeEndpoint += rootEndpoint;
+        for (int pathVariable : pathVariables)
+        {
+            if (safeEndpoint.charAt(safeEndpoint.length() - 1) != '/')
+            {
+                safeEndpoint += "/";
+            }
+            safeEndpoint += pathVariable;
+        }
+        return new ModelAndView("redirect:" + safeEndpoint);
     }
 }

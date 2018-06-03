@@ -187,7 +187,7 @@ public class AdminController extends AbstractController
         throws PersistenceException
     {
         FinskaCompetition competition = mCompetitionService.createCompetition(name, startDate, players);
-        return redirectTo("/admin/update/competition/" + competition.getId());
+        return redirectTo("/admin/update/competition", competition.getId());
     }
 
     /**
@@ -248,7 +248,7 @@ public class AdminController extends AbstractController
         throws PersistenceException
     {
         mCompetitionService.updateCompetition(id, name, startDate, players);
-        return redirectTo("/admin/update/competition/" + id);
+        return redirectTo("/admin/update/competition", id);
     }
 
     /**
@@ -264,7 +264,7 @@ public class AdminController extends AbstractController
     public ModelAndView updateCompetition(@PathVariable("id") int id)
         throws PersistenceException
     {
-        return redirectTo("/admin/create/round/" + id);
+        return redirectTo("/admin/create/round", id);
     }
 
     /**
@@ -319,7 +319,7 @@ public class AdminController extends AbstractController
         throws PersistenceException
     {
         FinskaRound round = mRoundService.createRound(id, roundDate, playerIDs);
-        return redirectTo("/admin/update/round/" + id + "/" + round.getKey());
+        return redirectTo("/admin/update/round", id, round.getKey());
     }
 
     /**
@@ -332,7 +332,7 @@ public class AdminController extends AbstractController
     @PostMapping(value="/create/round/{id}", params="action=cancel")
     public ModelAndView cancelCreateRound(@PathVariable("id") int id)
     {
-        return redirectTo("/admin/update/competition/" + id);
+        return redirectTo("/admin/update/competition", id);
     }
 
     /**
@@ -385,7 +385,7 @@ public class AdminController extends AbstractController
         throws PersistenceException
     {
         mRoundService.updateRound(id, roundNumber, roundDate, players);
-        return redirectTo("/admin/update/round/" + id + "/" + roundNumber);
+        return redirectTo("/admin/update/round", id, roundNumber);
     }
 
     /**
@@ -403,7 +403,7 @@ public class AdminController extends AbstractController
                                     @PathVariable("roundNumber") int roundNumber)
         throws PersistenceException
     {
-        return redirectTo("/admin/create/match/" + id + "/" + roundNumber);
+        return redirectTo("/admin/create/match", id, roundNumber);
     }
 
     /**
@@ -416,7 +416,7 @@ public class AdminController extends AbstractController
     @PostMapping(value="/update/round/{id}/{roundNumber}", params="action=done")
     public ModelAndView cancelUpdateRound(@PathVariable("id") int id)
     {
-        return redirectTo("/admin/update/competition/" + id);
+        return redirectTo("/admin/update/competition", id);
     }
 
     /**
@@ -465,7 +465,7 @@ public class AdminController extends AbstractController
         throws PersistenceException
     {
         mMatchService.createMatch(id, roundNumber, winnerIds, fastWin);
-        return redirectTo("/admin/update/round/" + id + "/" + roundNumber);
+        return redirectTo("/admin/update/round", id, roundNumber);
     }
 
     /**
@@ -480,7 +480,7 @@ public class AdminController extends AbstractController
     public ModelAndView cancelCreateMatch(@PathVariable("id") int id,
                                           @PathVariable("roundNumber") int roundNumber)
     {
-        return redirectTo("/admin/update/round/" + id + "/" + roundNumber);
+        return redirectTo("/admin/update/round", id, roundNumber);
     }
 
     /**
@@ -505,7 +505,7 @@ public class AdminController extends AbstractController
         throws PersistenceException
     {
         mMatchService.updateMatch(id, roundNumber, matchNumber, winnerIds, fastWin);
-        return redirectTo("/admin/update/round/" + id + "/" + roundNumber);
+        return redirectTo("/admin/update/round", id, roundNumber);
     }
 
     /**
@@ -525,6 +525,6 @@ public class AdminController extends AbstractController
                                     @PathVariable("matchNumber") int matchNumber)
         throws PersistenceException
     {
-        return redirectTo("/admin/create/match/" + id + "/" + roundNumber);
+        return redirectTo("/admin/create/match", id, roundNumber);
     }
 }
