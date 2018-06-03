@@ -150,6 +150,59 @@ public class AdminController extends AbstractController
     }
 
     /**
+     * Displays a template for creating a new competition.
+     * 
+     * @param model the model to add data to
+     * 
+     * @return The template name.
+     * 
+     * @throws PersistenceException error loading data
+     */
+    @GetMapping("/create/competition")
+    public String createCompetition(Model model)
+        throws PersistenceException
+    {
+        model.addAttribute(VIEW_TITLE, "sw.finska.page.title.competition.create");
+        model.addAttribute(FRAGMENT_FILE_KEY, COMPETITION);
+        model.addAttribute(FRAGMENT_NAME_KEY, CREATE);
+        model.addAttribute(PLAYERS, mPlayerService.getPlayers());
+        model.addAttribute("date", LocalDate.now());
+        return TEMPLATE;
+    }
+
+    /**
+     * Creates a new competition with the submitted data.
+     * 
+     * @param name the updated name
+     * @param startDate the updated start date
+     * @param players the players selected for this competition
+     * 
+     * @return The next page to display.
+     * 
+     * @throws PersistenceException error creating competition
+     */
+    @PostMapping(value="/create/competition", params="action=create")
+    public ModelAndView createCompetition(@RequestParam("name") String name,
+                                          @RequestParam("start-date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
+                                          @RequestParam("players") int[] players)
+        throws PersistenceException
+    {
+        FinskaCompetition competition = mCompetitionService.createCompetition(name, startDate, players);
+        return redirectTo("/admin/update/competition/" + competition.getId());
+    }
+
+    /**
+     * Cancels the creation of a new competition.
+     * 
+     * @return The next page to display.
+     */
+    @PostMapping(value="/create/competition", params="action=cancel")
+    public ModelAndView createCompetition()
+    {
+        return redirectTo("/display/competitions");
+    }
+
+    /**
      * Displays the nominated competition so that it can be updated.
      * 
      * @param id the competition ID
@@ -186,7 +239,7 @@ public class AdminController extends AbstractController
      * 
      * @return The next page to display.
      * 
-     * @throws PersistenceException error updating round
+     * @throws PersistenceException error updating competition
      */
     @PostMapping(value="/update/competition/{id}", params="action=update")
     public ModelAndView updateCompetition(@PathVariable("id") int id,
@@ -197,6 +250,22 @@ public class AdminController extends AbstractController
     {
         mCompetitionService.updateCompetition(id, name, startDate, players);
         return redirectTo("/admin/update/competition/" + id);
+    }
+
+    /**
+     * Adds a new round to the nominated competition.
+     * 
+     * @param id the competition ID
+     * 
+     * @return The next page to display.
+     * 
+     * @throws PersistenceException error updating competition
+     */
+    @PostMapping(value="/update/competition/{id}", params="action=create")
+    public ModelAndView updateCompetition(@PathVariable("id") int id)
+        throws PersistenceException
+    {
+        return redirectTo("/admin/create/round/" + id);
     }
 
     /**

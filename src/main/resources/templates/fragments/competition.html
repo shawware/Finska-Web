@@ -31,6 +31,15 @@
 </div>
 
 <div th:fragment="competition">
+  <p th:text="#{sw.finska.text.startDate(${competition.startDate})}"></p>
+  <th:block th:if="${players.size() > 0}">
+    <p>
+      <th:block th:text="#{sw.finska.text.players}"></th:block>
+      <th:block th:each="player, status : ${players}">
+        <th:block th:text="${player.key}"></th:block><th:block th:if="!${status.last}">,</th:block>
+      </th:block>
+    </p>
+  </th:block>
   <table th:if="${competition.numberOfRounds() > 0}" class="table table-bordered table-striped">
     <thead class="thead-dark">
       <tr>
@@ -57,6 +66,28 @@
   </table>
 </div>
 
+<div th:fragment="create">
+  <form method="post" th:action="@{/admin/create/competition}">
+    <div class="form-group">
+      <label for="name" th:text="#{sw.finska.admin.label.name}"></label>
+      <input name="name" type="text">
+    </div>
+    <div class="form-group">
+      <label for="start-date" th:text="#{sw.finska.admin.label.startDate}"></label>
+      <input name="start-date" type="date" th:value="${date.toString()}">
+    </div>
+    <div class="form-group">
+      <label class="form-check-label" for="players" th:text="#{sw.finska.admin.label.players}"></label>
+      <div th:each="player : ${players}" class="form-check form-check-inline">
+        <input type="checkbox" class="form-check-input" name="players"
+               th:value="${player.value.id}" th:text="${player.value.key}">
+      </div>
+    </div>
+    <button type="submit" class="btn btn-primary"   name="action" th:text="#{sw.finska.admin.button.create.competition}" th:value="create"></button>
+    <button type="submit" class="btn btn-secondary" name="action" th:text="#{sw.finska.admin.button.cancel}" th:value="cancel"></button>
+  </form>
+</div>
+
 <div th:fragment="update">
   <form method="post" th:action="@{/admin/update/competition/{id}(id=${competition.id})}">
     <div class="form-group">
@@ -77,6 +108,8 @@
     <button type="submit" class="btn btn-primary"   name="action" th:text="#{sw.finska.admin.button.update.competition}" th:value="update"></button>
     <button type="submit" class="btn btn-primary"   name="action" th:if="${competition.numberOfRounds() == 0}"
                                                                   th:text="#{sw.finska.admin.button.create.round.first}" th:value="create"></button>
+    <button type="submit" class="btn btn-primary"   name="action" th:unless="${competition.numberOfRounds() == 0}"
+                                                                  th:text="#{sw.finska.admin.button.create.round.more}"  th:value="create"></button>
     <button type="submit" class="btn btn-secondary" name="action" th:text="#{sw.finska.admin.button.done}"               th:value="done"></button>
   </form>
   <div th:if="${competition.numberOfRounds() > 0}">
