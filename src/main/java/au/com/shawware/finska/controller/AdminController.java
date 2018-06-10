@@ -47,6 +47,27 @@ public class AdminController extends AbstractController
     }
 
     /**
+     * Displays a current players with update options.
+     * 
+     * @param model the model to add data to
+     * 
+     * @return The template name.
+     * 
+     * @throws PersistenceException error accessing players
+     */
+    @GetMapping("/players")
+    public String players(Model model)
+        throws PersistenceException
+    {
+        model.addAttribute(VIEW_TITLE, "sw.finska.page.title.players");
+        model.addAttribute(FRAGMENT_FILE_KEY, PLAYER);
+        model.addAttribute(FRAGMENT_NAME_KEY, PLAYERS);
+        model.addAttribute(PLAYERS, mPlayerService.getPlayers());
+        model.addAttribute(ADMIN, true);
+        return TEMPLATE;
+    }
+
+    /**
      * Displays a template for creating a new player.
      * 
      * @param model the model to add data to

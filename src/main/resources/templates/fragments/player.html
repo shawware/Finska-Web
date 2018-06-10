@@ -17,10 +17,17 @@
       <tr th:each="player : ${players}">
         <td th:text="${player.value.id}"></td>
         <td>
+          <th:block th:if="${admin}">
           <a th:href="@{/admin/update/player/{id}(id=${player.value.id})}"
              th:title="#{sw.finska.admin.link.player.update(${player.value.id})}"
              th:text="${player.value.key}"></a>
-        </td>
+          </th:block>
+          <th:block th:unless="${admin}">
+          <a th:href="@{/display/player/{id}(id=${player.value.id})}"
+             th:title="#{sw.finska.link.player(${player.value.id})}"
+             th:text="${player.value.key}"></a>
+          </th:block>
+       </td>
       </tr>
     </tbody>
   </table>
