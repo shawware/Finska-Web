@@ -64,6 +64,9 @@ public abstract class AbstractController
     /** The key used for the update operation. */
     protected static final String UPDATE = "update";
 
+    /** Indicates whether the current user is an administrator. */
+    protected static final String ADMIN = "admin";
+
     /** The home end point. */
     protected static final String HOME = "/";
 

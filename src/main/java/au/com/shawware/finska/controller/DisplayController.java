@@ -205,6 +205,7 @@ public class DisplayController extends AbstractController
         model.addAttribute(COMPETITIONS, competitions);
         model.addAttribute(FRAGMENT_FILE_KEY, COMPETITION);
         model.addAttribute(FRAGMENT_NAME_KEY, COMPETITIONS);
+        model.addAttribute(ADMIN, true);
         return TEMPLATE;
     }
 
@@ -229,6 +230,7 @@ public class DisplayController extends AbstractController
         model.addAttribute(PLAYERS, competition.getEntrants());
         model.addAttribute(FRAGMENT_FILE_KEY, COMPETITION);
         model.addAttribute(FRAGMENT_NAME_KEY, COMPETITION);
+        model.addAttribute(ADMIN, true);
         return TEMPLATE;
     }
 

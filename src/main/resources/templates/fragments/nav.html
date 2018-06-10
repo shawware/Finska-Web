@@ -36,7 +36,7 @@
              th:title="#{sw.finska.link.competitions.title}"
              th:text="#{sw.finska.link.competitions}"></a>
         </li>
-        <li class="nav-item dropdown">
+        <li class="nav-item dropdown" th:if="${admin}">
           <a class="nav-link dropdown-toggle"
             href="#" id="navbarAdminMenu"
             th:text="#{sw.finska.text.admin}"
