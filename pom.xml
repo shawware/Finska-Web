@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <artifactId>sw-finska-web</artifactId>
-  <version>0.2</version>
+  <version>0.3</version>
   <packaging>war</packaging>
   <name>Shawware Finska Web</name>
   <description>Web framework and application for maintaining Finska match results.</description>
@@ -42,7 +42,7 @@
     <dependency>
       <groupId>au.com.shawware</groupId>
       <artifactId>sw-finska-core</artifactId>
-      <version>0.9.0</version>
+      <version>0.10.0</version>
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>

@@ -43,14 +43,17 @@ public class DisplayController extends AbstractController
     }
 
     /**
-     * Displays the latest leader board and player data.
+     * Displays the latest leader board.
      * 
      * @param model the model to add data to
      * 
      * @return The template name.
+     * 
+     * @throws PersistenceException error loading data
      */
     @GetMapping({"", "/", "/table"})
     public String leaderBoard(Model model)
+        throws PersistenceException
     {
         List<EntrantResult> leaderboard = mResultsService.getLeaderBoard();
         model.addAttribute(VIEW_TITLE, "sw.finska.page.title.leaderboard");
@@ -59,19 +62,25 @@ public class DisplayController extends AbstractController
     }
 
     /**
-     * Displays the leader board and player data for the given number of rounds.
+     * Displays the leader board after the given number of rounds of the specified competition.
      * 
-     * @param number the number of rounds
+     * @param id the competition ID
+     * @param roundNumber the number of rounds
      * @param model the model to add data to
      * 
      * @return The template name.
+     * 
+     * @throws PersistenceException error loading data
      */
-    @GetMapping("/table/{number}")
-    public String leaderBoard(@PathVariable("number") int number, Model model)
+    @GetMapping("/table/{id}/{roundNumber}")
+    public String leaderBoard(@PathVariable("id") int id,
+                              @PathVariable("roundNumber") int roundNumber,
+                              Model model)
+        throws PersistenceException
     {
-        List<EntrantResult> leaderboard = mResultsService.getLeaderBoard(number);
+        List<EntrantResult> leaderboard = mResultsService.getLeaderBoard(id, roundNumber);
         model.addAttribute(VIEW_TITLE, "sw.finska.page.title.leaderboard.round");
-        model.addAttribute(VIEW_TITLE_ARG_ONE, number);
+        model.addAttribute(VIEW_TITLE_ARG_ONE, roundNumber);
         processLeaderBoard(leaderboard, model);
         return TEMPLATE;
     }
@@ -80,16 +89,20 @@ public class DisplayController extends AbstractController
      * Processes the given leader board and adds the relevant data to the model.
      *
      * @param leaderboard the leader board to process
-     * @param model the model to add to 
+     * @param model the model to add to
+     * 
+     * @throws PersistenceException error loading data
      */
     private void processLeaderBoard(List<EntrantResult> leaderboard, Model model)
+        throws PersistenceException
     {
         if (!leaderboard.isEmpty())
         {
+            FinskaCompetition competition = mResultsService.getCurrentCompetition();
             model.addAttribute("data", true);
             EntrantResult first = leaderboard.get(0);
             model.addAttribute("spec", first.getResultSpecification());
-            model.addAttribute(PLAYERS, mResultsService.getPlayers());
+            model.addAttribute(PLAYERS, mPlayerService.getPlayers());
             model.addAttribute(LEADERBOARD, leaderboard);
         }
         else
@@ -110,14 +123,14 @@ public class DisplayController extends AbstractController
     @GetMapping("/rounds")
     public String rounds(Model model)
     {
-        FinskaCompetition competition = mResultsService.getCompetition();
+        FinskaCompetition competition = mResultsService.getCurrentCompetition();
         if (competition != null)
         {
             model.addAttribute("data", true);
             List<List<EntrantResult>> roundResults = mResultsService.getRoundResults();
             EntrantResult first = roundResults.get(0).get(0);
             model.addAttribute("spec", first.getResultSpecification());
-            model.addAttribute(PLAYERS, mResultsService.getPlayers());
+            model.addAttribute(PLAYERS, competition.getEntrantMap());
             model.addAttribute(COMPETITION, competition);
             model.addAttribute(ROUNDS, competition.getRounds());
             model.addAttribute("results", roundResults);
@@ -160,11 +173,14 @@ public class DisplayController extends AbstractController
      * @param model the model to add data to
      * 
      * @return The template name.
+     * 
+     * @throws PersistenceException error loading player
      */
     @GetMapping("/player/{id}")
     public String player(@PathVariable("id") int id, Model model)
+        throws PersistenceException
     {
-        Player player = mResultsService.getPlayer(id);
+        Player player = mPlayerService.getPlayer(id);
         model.addAttribute(VIEW_TITLE, "sw.finska.page.title.player");
         model.addAttribute(VIEW_TITLE_ARG_ONE, id);
         model.addAttribute(PLAYER, player);
@@ -216,17 +232,21 @@ public class DisplayController extends AbstractController
     /**
      * Displays the specified round.
      * 
-     * @param number the round's number
+     * @param id the competition ID
+     * @param roundNumber the round's number
      * @param model the model to add data to
      * 
      * @return The template name.
      */
-    @GetMapping("/round/{number}")
-    public String round(@PathVariable("number") int number, Model model)
+    @GetMapping("/round/{id}/{roundNumber}")
+    public String round(@PathVariable("id") int id,
+                        @PathVariable("roundNumber") int roundNumber,
+                        Model model)
     {
+        FinskaCompetition competition = mResultsService.getCompetition(id);
         model.addAttribute(VIEW_TITLE, "sw.finska.page.title.round");
-        model.addAttribute(VIEW_TITLE_ARG_ONE, number);
-        model.addAttribute(ROUND, mResultsService.getRound(number));
+        model.addAttribute(VIEW_TITLE_ARG_ONE, roundNumber);
+        model.addAttribute(ROUND, competition.getRound(roundNumber));
         model.addAttribute(FRAGMENT_FILE_KEY, ROUND);
         model.addAttribute(FRAGMENT_NAME_KEY, DISPLAY);
         return TEMPLATE;

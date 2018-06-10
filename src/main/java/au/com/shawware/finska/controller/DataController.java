@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import au.com.shawware.finska.entity.Player;
 import au.com.shawware.finska.service.DataService;
+import au.com.shawware.util.persistence.PersistenceException;
 
 /**
  * Retrieves and supplies data.
@@ -44,11 +45,14 @@ public class DataController extends AbstractController
      * Retrieves the player data and returns it without change.
      * 
      * @return The player data.
+     * 
+     * @throws PersistenceException error accessing players
      */
     @GetMapping("/players")
     public Map<Integer, Player> players()
+        throws PersistenceException
     {
-        Map<Integer, Player> players = mResultsService.getPlayers();
+        Map<Integer, Player> players = mPlayerService.getPlayers();
         LOG.debug("Players retrieved: " + players.size()); //$NON-NLS-1$
         return players;
     }
@@ -59,12 +63,15 @@ public class DataController extends AbstractController
      * 
      * @param id the player's ID
      * 
-     * @return The player data.
+     * @return The player's data.
+     * 
+     * @throws PersistenceException error accessing player
      */
     @GetMapping("/player/{id}")
     public Player player(@PathVariable("id") int id)
+        throws PersistenceException
     {
-        Player player = mResultsService.getPlayer(id);
+        Player player = mPlayerService.getPlayer(id);
         LOG.debug("Player retrieved: " + player); //$NON-NLS-1$
         return player;
     }
