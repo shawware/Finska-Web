@@ -247,9 +247,13 @@ public class DisplayController extends AbstractController
                         Model model)
     {
         FinskaCompetition competition = mResultsService.getCompetition(id);
+        FinskaRound round = competition.getRound(roundNumber);
         model.addAttribute(VIEW_TITLE, "sw.finska.page.title.round");
-        model.addAttribute(VIEW_TITLE_ARG_ONE, roundNumber);
-        model.addAttribute(ROUND, competition.getRound(roundNumber));
+        model.addAttribute(VIEW_TITLE_ARG_ONE, competition.getKey());
+        model.addAttribute(VIEW_TITLE_ARG_TWO, roundNumber);
+        model.addAttribute(ROUND, round);
+        model.addAttribute(MATCHES, round.getMatches());
+        model.addAttribute(PLAYERS, competition.getEntrantMap());
         model.addAttribute(FRAGMENT_FILE_KEY, ROUND);
         model.addAttribute(FRAGMENT_NAME_KEY, DISPLAY);
         return TEMPLATE;

@@ -33,18 +33,28 @@
 </div>
 
 <div th:fragment="display">
-  <table class="table table-bordered table-striped">
-    <thead class="thead-dark">
-      <tr>
-        <th th:text="#{sw.finska.player}"></th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr th:each="player : ${round.players}">
-        <td th:text="${player.key}"></td>
-      </tr>
-    </tbody>
-  </table>
+  <p th:text="#{sw.finska.text.roundDate(${round.roundDate})}"></p>
+  <th:block th:if="${round.players.size() > 0}">
+    <p>
+      <th:block th:text="#{sw.finska.text.players}"></th:block>
+      <th:block th:each="player, status : ${round.players}">
+        <th:block th:text="${player.key}"></th:block><th:block th:if="!${status.last}">,</th:block>
+      </th:block>
+    </p>
+  </th:block>
+  <div th:each="match : ${matches}">
+    <hr/>
+    <p th:text="#{sw.finska.text.match(${match.key})}"></p>
+    <th:block th:if="${match.hasWinner()}">
+      <p>
+        <th:block th:text="#{sw.finska.text.winners}"></th:block>
+        <th:block th:each="winner, status : ${match.winnerIds}">
+          <th:block th:text="${players.get(winner).key}"></th:block><th:block th:if="!${status.last}">,</th:block>
+        </th:block>
+      </p>
+      <p th:text="#{sw.finska.text.fastWin(${match.isFastWin()})}"></p>
+    </th:block>
+  </div>
 </div>
 
 <div th:fragment="create">
