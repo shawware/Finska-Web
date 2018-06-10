@@ -98,7 +98,6 @@ public class DisplayController extends AbstractController
     {
         if (!leaderboard.isEmpty())
         {
-            FinskaCompetition competition = mResultsService.getCurrentCompetition();
             model.addAttribute("data", true);
             EntrantResult first = leaderboard.get(0);
             model.addAttribute("spec", first.getResultSpecification());
