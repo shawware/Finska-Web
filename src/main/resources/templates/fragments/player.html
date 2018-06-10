@@ -18,7 +18,7 @@
         <td th:text="${player.value.id}"></td>
         <td>
           <a th:href="@{/admin/update/player/{id}(id=${player.value.id})}"
-             th:title="#{sw.finska.link.player.update(${player.value.id})}"
+             th:title="#{sw.finska.admin.link.player.update(${player.value.id})}"
              th:text="${player.value.key}"></a>
         </td>
       </tr>
@@ -39,7 +39,7 @@
         <td th:text="${player.id}"></td>
         <td>
           <a th:href="@{/admin/update/player/{id}(id=${player.id})}"
-             th:title="#{sw.finska.link.player.update(${player.id})}"
+             th:title="#{sw.finska.admin.link.player.update(${player.id})}"
              th:text="${player.key}"></a>
         </td>
       </tr>
