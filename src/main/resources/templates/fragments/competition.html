@@ -51,7 +51,11 @@
     </thead>
     <tbody>
       <tr th:each="round : ${rounds}">
-        <td th:text="${round.key}"></td>
+        <td>
+          <a th:href="@{/display/round/{id}/{number}(id=${competition.id},number=${round.key})}"
+             th:title="#{sw.finska.link.round.display(${round.key})}"
+             th:text="${round.key}"></a>
+        </td>
         <td th:text="${round.roundDate}"></td>
         <td th:text="${round.numberOfMatches()}"></td>
         <td>

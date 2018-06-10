@@ -7,6 +7,7 @@
 
 package au.com.shawware.finska.controller;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import au.com.shawware.compadmin.scoring.EntrantResult;
 import au.com.shawware.finska.entity.FinskaCompetition;
+import au.com.shawware.finska.entity.FinskaRound;
 import au.com.shawware.finska.entity.Player;
 import au.com.shawware.finska.service.DataService;
 import au.com.shawware.util.persistence.PersistenceException;
@@ -218,10 +220,12 @@ public class DisplayController extends AbstractController
     public String competition(@PathVariable("id") int id, Model model)
     {
         FinskaCompetition competition = mResultsService.getCompetition(id);
+        List<FinskaRound> rounds = competition.getRounds();
+        Collections.reverse(rounds); // Most recent round first.
         model.addAttribute(VIEW_TITLE, "sw.finska.page.title.competition");
         model.addAttribute(VIEW_TITLE_ARG_ONE, competition.getKey());
         model.addAttribute(COMPETITION, competition);
-        model.addAttribute(ROUNDS, competition.getRounds());
+        model.addAttribute(ROUNDS, rounds);
         model.addAttribute(PLAYERS, competition.getEntrants());
         model.addAttribute(FRAGMENT_FILE_KEY, COMPETITION);
         model.addAttribute(FRAGMENT_NAME_KEY, COMPETITION);
