@@ -97,7 +97,7 @@ public class AdminController extends AbstractController
         throws PersistenceException
     {
         mPlayerService.createPlayer(name);
-        return redirectTo("/display/players");
+        return redirectTo("/admin/players");
     }
 
     /**
@@ -108,7 +108,7 @@ public class AdminController extends AbstractController
     @PostMapping(value="/create/player", params="action=cancel")
     public ModelAndView cancelCreatePlayer()
     {
-        return redirectTo(HOME);
+        return redirectTo("/admin/players");
     }
 
     /**
@@ -149,7 +149,7 @@ public class AdminController extends AbstractController
         throws PersistenceException
     {
         mPlayerService.updatePlayer(id, name);
-        return redirectTo("/display/players");
+        return redirectTo("/admin/players");
     }
 
     /**
@@ -166,7 +166,7 @@ public class AdminController extends AbstractController
     public ModelAndView cancelUpdatePlayer(@PathVariable("id") int id, @RequestParam("name") String name)
         throws PersistenceException
     {
-        return redirectTo("/display/players");
+        return redirectTo("/admin/players");
     }
 
     /**
