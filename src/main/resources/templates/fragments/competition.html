@@ -18,10 +18,15 @@
     <tbody>
       <tr th:each="competition : ${competitions}">
         <td>
-          <a th:href="@{/display/competition/{id}(id=${competition.id})}"
+          <a th:if="${admin}"
+             th:href="@{/admin/update/competition/{id}(id=${competition.id})}"
+             th:title="#{sw.finska.admin.link.competition.update(${competition.id})}"
+             th:text="${competition.key}"></a>
+          <a th:unless="${admin}"
+             th:href="@{/display/competition/{id}(id=${competition.id})}"
              th:title="#{sw.finska.link.competition.title(${competition.key})}"
              th:text="${competition.key}"></a>
-        </td>
+       </td>
         <td th:text="${competition.startDate}"></td>
         <td th:text="${competition.numberOfRounds()}"></td>
         <td th:text="${competition.getEntrantIds().size()}"></td>

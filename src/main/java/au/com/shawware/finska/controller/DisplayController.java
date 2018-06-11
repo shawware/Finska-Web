@@ -191,7 +191,7 @@ public class DisplayController extends AbstractController
     }
 
     /**
-     * Displays the list of competition.
+     * Displays the list of competitions.
      * 
      * @param model the model to add data to
      * 

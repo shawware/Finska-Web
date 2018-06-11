@@ -8,6 +8,7 @@
 package au.com.shawware.finska.controller;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Set;
 
 import org.springframework.format.annotation.DateTimeFormat;
@@ -167,6 +168,25 @@ public class AdminController extends AbstractController
         throws PersistenceException
     {
         return redirectTo("/admin/players");
+    }
+
+    /**
+     * Displays the list of competitions.
+     * 
+     * @param model the model to add data to
+     * 
+     * @return The template name.
+     */
+    @GetMapping("/competitions")
+    public String competitions(Model model)
+    {
+        List<FinskaCompetition> competitions = mResultsService.getCompetitions();
+        model.addAttribute(VIEW_TITLE, "sw.finska.page.title.competitions");
+        model.addAttribute(COMPETITIONS, competitions);
+        model.addAttribute(FRAGMENT_FILE_KEY, COMPETITION);
+        model.addAttribute(FRAGMENT_NAME_KEY, COMPETITIONS);
+        model.addAttribute(ADMIN, true);
+        return TEMPLATE;
     }
 
     /**
