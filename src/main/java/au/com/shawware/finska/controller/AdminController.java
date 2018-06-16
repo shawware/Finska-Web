@@ -224,7 +224,7 @@ public class AdminController extends AbstractController
     @PostMapping(value="/create/competition", params="action=create")
     public ModelAndView createCompetition(@RequestParam("name") String name,
                                           @RequestParam("start-date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
-                                          @RequestParam("players") int[] players)
+                                          @RequestParam(name="players", required=false) int[] players)
         throws PersistenceException
     {
         FinskaCompetition competition = mCompetitionService.createCompetition(name, startDate, players);
@@ -283,9 +283,9 @@ public class AdminController extends AbstractController
      */
     @PostMapping(value="/update/competition/{id}", params="action=update")
     public ModelAndView updateCompetition(@PathVariable("id") int id,
-        @RequestParam("name") String name,
-        @RequestParam("start-date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
-        @RequestParam("players") int[] players)
+                                          @RequestParam("name") String name,
+                                          @RequestParam("start-date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
+                                          @RequestParam(name="players", required=false) int[] players)
         throws PersistenceException
     {
         mCompetitionService.updateCompetition(id, name, startDate, players);
@@ -421,7 +421,7 @@ public class AdminController extends AbstractController
     @PostMapping(value="/update/round/{id}/{roundNumber}", params="action=update")
     public ModelAndView updateRound(@PathVariable("id") int id,
                                     @PathVariable("roundNumber") int roundNumber,
-                                    @RequestParam("players") int[] players,
+                                    @RequestParam(name="players", required=false) int[] players,
                                     @RequestParam("round-date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate roundDate)
         throws PersistenceException
     {
