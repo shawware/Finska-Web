@@ -6,6 +6,15 @@
 <body>
 
 <div th:fragment="players">
+  <div th:if="${admin}">
+    <a th:href="@{/admin/create/player}" th:if="${players.size() == 0}"     th:text="#{sw.finska.admin.button.create.player.first}"
+       class="btn btn-primary" role="button" aria-pressed="true"></a>
+    <a th:href="@{/admin/create/player}" th:unless="${players.size() == 0}" th:text="#{sw.finska.admin.button.create.player.more}"
+       class="btn btn-primary" role="button" aria-pressed="true"></a>
+    <a th:href="@{/display}" th:text="#{sw.finska.admin.button.done}"
+       class="btn btn-secondary" role="button" aria-pressed="true"></a>
+    <hr/>
+  </div>
   <table th:if="${players.size() > 0}" class="table table-bordered table-striped">
     <thead class="thead-dark">
       <tr>
