@@ -8,6 +8,7 @@
 package au.com.shawware.finska.controller;
 
 import java.time.LocalDate;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
@@ -258,13 +259,15 @@ public class AdminController extends AbstractController
     {
         FinskaCompetition competition = mResultsService.getCompetition(id);
         Set<Integer> ids = competition.getEntrantIds();
+        List<FinskaRound> rounds = competition.getRounds();
+        Collections.reverse(rounds); // Most recent round first.
         model.addAttribute(VIEW_TITLE, "sw.finska.page.title.competition.update");
         model.addAttribute(VIEW_TITLE_ARG_ONE, competition.getKey());
         model.addAttribute(FRAGMENT_FILE_KEY, COMPETITION);
         model.addAttribute(FRAGMENT_NAME_KEY, UPDATE);
         model.addAttribute(COMPETITION, competition);
         model.addAttribute("checked", ids);
-        model.addAttribute(ROUNDS, competition.getRounds());
+        model.addAttribute(ROUNDS, rounds);
         model.addAttribute(PLAYERS, mPlayerService.getPlayers());
         return TEMPLATE;
     }
