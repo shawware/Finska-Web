@@ -6,6 +6,15 @@
 <body>
 
 <div th:fragment="competitions">
+  <div th:if="${admin}">
+    <a th:href="@{/admin/create/competition}" th:if="${competitions.size() == 0}"     th:text="#{sw.finska.admin.button.create.competition.first}"
+       class="btn btn-primary" role="button" aria-pressed="true"></a>
+    <a th:href="@{/admin/create/competition}" th:unless="${competitions.size() == 0}" th:text="#{sw.finska.admin.button.create.competition.more}"
+       class="btn btn-primary" role="button" aria-pressed="true"></a>
+    <a th:href="@{/display}" th:text="#{sw.finska.admin.button.done}"
+       class="btn btn-secondary" role="button" aria-pressed="true"></a>
+    <hr/>
+  </div>
   <table th:if="${competitions.size() > 0}" class="table table-bordered table-striped">
     <thead class="thead-dark">
       <tr>
