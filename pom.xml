@@ -42,12 +42,12 @@
     <dependency>
       <groupId>au.com.shawware</groupId>
       <artifactId>sw-finska-core</artifactId>
-      <version>0.10.0</version>
+      <version>0.11.0</version>
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-web</artifactId>
-      <version>2.0.1.RELEASE</version>
+      <version>2.0.3.RELEASE</version>
     </dependency>
     <dependency>
       <groupId>org.thymeleaf</groupId>
