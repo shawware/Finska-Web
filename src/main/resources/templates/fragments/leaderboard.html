@@ -34,6 +34,29 @@
     </tbody>
   </table>
 </div>
+ 
+<div th:fragment="history">
+  <table th:if="${data}" class="table table-bordered table-striped">
+    <thead class="thead-dark">
+      <tr>
+        <th th:text="#{sw.finska.player}"></th>
+        <th:block th:each="round: ${#numbers.sequence(1, competition.numberOfRounds())}">
+          <th th:text="#{sw.finska.heading.round(${round})}"></th>
+        </th:block>
+      </tr>
+    </thead>
+    <tbody>
+      <th:block th:each="player : ${players}">
+        <tr th:if="${history.containsKey(player.value.id)}">
+          <td th:text="${player.value.key}"></td>
+          <th:block th:each="rank : ${history.get(player.value.id)}">
+            <td th:text="${rank}"></td>
+          </th:block>
+        </tr>
+      </th:block>
+    </tbody>
+  </table>
+</div>
 
 </body>
 </html>

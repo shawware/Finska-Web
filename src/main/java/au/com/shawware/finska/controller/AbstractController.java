@@ -44,6 +44,8 @@ public abstract class AbstractController
     protected static final String COMPETITION = "competition";
     /** The name of the attribute / file key that is used for a leader board. */
     protected static final String LEADERBOARD = "leaderboard";
+    /** The name of the attribute that is used for player history. */
+    protected static final String HISTORY = "history";
     /** The name of the attribute that is used for players. */
     protected static final String PLAYERS = "players";
     /** The name of the attribute / file key that is used for a single player. */

@@ -147,6 +147,37 @@ public class DisplayController extends AbstractController
     }
 
     /**
+     * Displays the players history over all rounds.
+     * 
+     * @param model the model to add data to
+     * 
+     * @return The template name.
+     */
+    @GetMapping("/history")
+    public String history(Model model)
+        throws PersistenceException
+    {
+        FinskaCompetition competition = mResultsService.getCurrentCompetition();
+        if (competition != null)
+        {
+            model.addAttribute("data", true);
+            Map<Integer, Player> players = mPlayerService.getPlayers();
+            Map<Integer, int[]> history = mResultsService.getLeaderBoardHistory(true);
+            model.addAttribute(PLAYERS, players);
+            model.addAttribute(COMPETITION, competition);
+            model.addAttribute(HISTORY, history);
+        }
+        else
+        {
+            model.addAttribute("data", false);
+        }
+        model.addAttribute(VIEW_TITLE, "sw.finska.page.title.history");
+        model.addAttribute(FRAGMENT_FILE_KEY, LEADERBOARD);
+        model.addAttribute(FRAGMENT_NAME_KEY, HISTORY);
+        return TEMPLATE;
+    }
+
+    /**
      * Displays the latest player data.
      * 
      * @param model the model to add data to
