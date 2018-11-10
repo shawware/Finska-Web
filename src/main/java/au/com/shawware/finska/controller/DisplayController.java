@@ -147,14 +147,41 @@ public class DisplayController extends AbstractController
     }
 
     /**
-     * Displays the players history over all rounds.
+     * Displays the players' rank history over all rounds.
      * 
      * @param model the model to add data to
      * 
      * @return The template name.
      */
-    @GetMapping("/history")
-    public String history(Model model)
+    @GetMapping("/history/rank")
+    public String rankHistory(Model model)
+        throws PersistenceException
+    {
+        return history(model, mResultsService.getRankHistory(), "sw.finska.page.title.history.rank");
+    }
+
+    /**
+     * Displays the players' result history over all rounds.
+     * 
+     * @param model the model to add data to
+     * 
+     * @return The template name.
+     */
+    @GetMapping("/history/result")
+    public String resultHistory(Model model)
+        throws PersistenceException
+    {
+        return history(model, mResultsService.getResultHistory(), "sw.finska.page.title.history.result");
+    }
+
+    /**
+     * Common processing for history end points.
+     * 
+     * @param model the model to add data to
+     * 
+     * @return The template name.
+     */
+    private String history(Model model, Map<Integer, Number[]> history, String title)
         throws PersistenceException
     {
         FinskaCompetition competition = mResultsService.getCurrentCompetition();
@@ -162,7 +189,6 @@ public class DisplayController extends AbstractController
         {
             model.addAttribute("data", true);
             Map<Integer, Player> players = mPlayerService.getPlayers();
-            Map<Integer, int[]> history = mResultsService.getLeaderBoardHistory(true);
             model.addAttribute(PLAYERS, players);
             model.addAttribute(COMPETITION, competition);
             model.addAttribute(HISTORY, history);
@@ -171,7 +197,7 @@ public class DisplayController extends AbstractController
         {
             model.addAttribute("data", false);
         }
-        model.addAttribute(VIEW_TITLE, "sw.finska.page.title.history");
+        model.addAttribute(VIEW_TITLE, title);
         model.addAttribute(FRAGMENT_FILE_KEY, LEADERBOARD);
         model.addAttribute(FRAGMENT_NAME_KEY, HISTORY);
         return TEMPLATE;
