@@ -7,7 +7,9 @@
 
 package au.com.shawware.finska.controller;
 
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -148,51 +150,91 @@ public class DisplayController extends AbstractController
     }
 
     /**
-     * Displays the players' rank history over all rounds.
+     * Displays the players' rank history over all rounds as a table.
      * 
      * @param model the model to add data to
      * 
      * @return The template name.
      */
-    @GetMapping("/history/rank")
-    public String rankHistory(Model model)
+    @GetMapping("/history/rank/table")
+    public String rankHistoryTable(Model model)
         throws PersistenceException
     {
-        return history(model, mResultsService.getRankHistory(), "sw.finska.page.title.history.rank");
+        return history(model, mResultsService.getRankHistory(), "sw.finska.page.title.history.rank", true, true);
     }
 
     /**
-     * Displays the players' result history over all rounds.
+     * Displays the players' result history over all rounds as a table.
      * 
      * @param model the model to add data to
      * 
      * @return The template name.
      */
-    @GetMapping("/history/result")
-    public String resultHistory(Model model)
+    @GetMapping("/history/result/table")
+    public String resultHistoryTable(Model model)
         throws PersistenceException
     {
-        return history(model, mResultsService.getResultHistory(), "sw.finska.page.title.history.result");
+        return history(model, mResultsService.getResultHistory(), "sw.finska.page.title.history.result", false, true);
+    }
+
+    /**
+     * Displays the players' rank history over all rounds as a chart.
+     * 
+     * @param model the model to add data to
+     * 
+     * @return The template name.
+     */
+    @GetMapping("/history/rank/chart")
+    public String rankHistoryChart(Model model)
+        throws PersistenceException
+    {
+        return history(model, mResultsService.getRankHistory(), "sw.finska.page.title.history.rank", true, false);
+    }
+
+    /**
+     * Displays the players' result history over all rounds as a chart.
+     * 
+     * @param model the model to add data to
+     * 
+     * @return The template name.
+     */
+    @GetMapping("/history/result/chart")
+    public String resultHistoryChart(Model model)
+        throws PersistenceException
+    {
+        return history(model, mResultsService.getResultHistory(), "sw.finska.page.title.history.result", false, false);
     }
 
     /**
      * Common processing for history end points.
      * 
      * @param model the model to add data to
+     * @param history the players' history
+     * @param title the page title to use
+     * @param rank whether to display rank or result data
+     * @param table whether to display a table or a chart
      * 
      * @return The template name.
      */
-    private String history(Model model, List<EntrantHistory> history, String title)
+    private String history(Model model, List<EntrantHistory> history, String title, boolean rank, boolean table)
         throws PersistenceException
     {
+        String fragment = table ? "historyTable" : "historyChart";
         FinskaCompetition competition = mResultsService.getCurrentCompetition();
         if (competition != null)
         {
             model.addAttribute("data", true);
             Map<Integer, Player> players = mPlayerService.getPlayers();
-            model.addAttribute(PLAYERS, players);
-            model.addAttribute(COMPETITION, competition);
-            model.addAttribute(HISTORY, history);
+            if (table)
+            {
+                model.addAttribute(PLAYERS, players);
+                model.addAttribute(COMPETITION, competition);
+                model.addAttribute(HISTORY, history);
+            }
+            else
+            {
+                convertToChartJs(model, history, rank, competition, players);
+            }
         }
         else
         {
@@ -200,8 +242,62 @@ public class DisplayController extends AbstractController
         }
         model.addAttribute(VIEW_TITLE, title);
         model.addAttribute(FRAGMENT_FILE_KEY, LEADERBOARD);
-        model.addAttribute(FRAGMENT_NAME_KEY, HISTORY);
+        model.addAttribute(FRAGMENT_NAME_KEY, fragment);
         return TEMPLATE;
+    }
+
+    /**
+     * Convert the history to a format that can be consumed by ChartJS.
+     * 
+     * @param model the model to add to
+     * @param history the players' history
+     * @param rank whether to display rank or result data
+     * @param competition the current competition
+     * @param players the players' data
+     */
+    @SuppressWarnings("static-method")
+    private void convertToChartJs(Model model, List<EntrantHistory> history, boolean rank, FinskaCompetition competition, Map<Integer, Player> players)
+    {
+        String[] colours =
+        {
+                "red",
+                "blue",
+                "black",
+                "green",
+                "brown",
+                "orange",
+                "teal",
+                "yellow",
+                "maroon",
+                "olive",
+                "lime",
+                "purple",
+                "fuschia",
+                "aqua",
+                "gray"
+        };
+
+        int[] labels = new int[competition.numberOfRounds()];
+        for (int i=0; i<labels.length; i++)
+        {
+            labels[i] = i + 1;
+        }
+        List<Map<String, Object>> datasets = new ArrayList<>();
+        int colourIndex = 0;
+        for (EntrantHistory data : history)
+        {
+            Map<String, Object> dataset = new HashMap<>();
+            dataset.put("fill", false);
+            dataset.put("data", data.getHistory());
+            dataset.put("label", players.get(data.getEntrantID()).getKey());
+            dataset.put("borderColor", colours[colourIndex]);
+            datasets.add(dataset);
+            colourIndex = (colourIndex == (colours.length - 1)) ? 0 : colourIndex + 1;
+        }
+        model.addAttribute("yaxis", rank ? "sw.finska.text.rank" : "sw.finska.text.points");
+        model.addAttribute("labels", labels);
+        model.addAttribute("datasets", datasets);
+        model.addAttribute("reverse", rank);
     }
 
     /**

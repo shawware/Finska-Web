@@ -35,7 +35,7 @@
   </table>
 </div>
  
-<div th:fragment="history">
+<div th:fragment="historyTable">
   <table th:if="${data}" class="table table-bordered table-striped">
     <thead class="thead-dark">
       <tr>
@@ -54,6 +54,45 @@
       </tr>
     </tbody>
   </table>
+</div>
+
+<div th:fragment="historyChart">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.js"
+          type="text/javascript"/></script>
+  <canvas id="historyChart"></canvas>
+  <script th:inline="javascript">
+    var ctx = document.getElementById('historyChart').getContext('2d');
+    var myChart = new Chart(ctx, {
+      type: 'line',
+      options: {
+        scales: {
+          yAxes: [{
+            scaleLabel: {
+              display: true,
+              labelString: /*[[#{${yaxis}}]]*/
+            },
+            ticks: {
+              beginAtZero: true,
+              reverse: /*[[${reverse}]]*/
+            }
+          }],
+          xAxes: [{
+            scaleLabel: {
+              display: true,
+              labelString: /*[[#{sw.finska.text.round}]]*/
+            }
+          }]
+        },
+  		legend: {
+  			position: 'right'
+  		}
+      },
+      data: {
+        labels: /*[[${labels}]]*/,
+        datasets: /*[[${datasets}]]*/,
+      }
+    });
+  </script>
 </div>
 
 </body>
