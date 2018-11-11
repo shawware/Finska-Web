@@ -46,14 +46,12 @@
       </tr>
     </thead>
     <tbody>
-      <th:block th:each="player : ${players}">
-        <tr th:if="${history.containsKey(player.value.id)}">
-          <td th:text="${player.value.key}"></td>
-          <th:block th:each="rank : ${history.get(player.value.id)}">
-            <td th:text="${rank}"></td>
-          </th:block>
-        </tr>
-      </th:block>
+      <tr th:each="row : ${history}">
+        <td th:text="${players.get(row.entrantID).key}"></td>
+        <th:block th:each="value : ${row.history}">
+          <td th:text="${value}"></td>
+        </th:block>
+      </tr>
     </tbody>
   </table>
 </div>

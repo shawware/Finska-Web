@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import au.com.shawware.compadmin.scoring.EntrantHistory;
 import au.com.shawware.compadmin.scoring.EntrantResult;
 import au.com.shawware.finska.entity.FinskaCompetition;
 import au.com.shawware.finska.entity.FinskaRound;
@@ -181,7 +182,7 @@ public class DisplayController extends AbstractController
      * 
      * @return The template name.
      */
-    private String history(Model model, Map<Integer, Number[]> history, String title)
+    private String history(Model model, List<EntrantHistory> history, String title)
         throws PersistenceException
     {
         FinskaCompetition competition = mResultsService.getCurrentCompetition();
