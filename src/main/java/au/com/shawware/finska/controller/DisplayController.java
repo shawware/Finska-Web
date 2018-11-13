@@ -164,17 +164,17 @@ public class DisplayController extends AbstractController
     }
 
     /**
-     * Displays the players' result history over all rounds as a table.
+     * Displays the players' points history over all rounds as a table.
      * 
      * @param model the model to add data to
      * 
      * @return The template name.
      */
-    @GetMapping("/history/result/table")
+    @GetMapping("/history/points/table")
     public String resultHistoryTable(Model model)
         throws PersistenceException
     {
-        return history(model, mResultsService.getResultHistory(), "sw.finska.page.title.history.result", false, true);
+        return history(model, mResultsService.getResultHistory(), "sw.finska.page.title.history.points", false, true);
     }
 
     /**
@@ -192,17 +192,17 @@ public class DisplayController extends AbstractController
     }
 
     /**
-     * Displays the players' result history over all rounds as a chart.
+     * Displays the players' points history over all rounds as a chart.
      * 
      * @param model the model to add data to
      * 
      * @return The template name.
      */
-    @GetMapping("/history/result/chart")
+    @GetMapping("/history/points/chart")
     public String resultHistoryChart(Model model)
         throws PersistenceException
     {
-        return history(model, mResultsService.getResultHistory(), "sw.finska.page.title.history.result", false, false);
+        return history(model, mResultsService.getResultHistory(), "sw.finska.page.title.history.points", false, false);
     }
 
     /**
@@ -251,7 +251,7 @@ public class DisplayController extends AbstractController
      * 
      * @param model the model to add to
      * @param history the players' history
-     * @param rank whether to display rank or result data
+     * @param rank whether to display rank or points data
      * @param competition the current competition
      * @param players the players' data
      */
@@ -265,6 +265,7 @@ public class DisplayController extends AbstractController
                 "black",
                 "green",
                 "brown",
+                "fuschia",
                 "orange",
                 "teal",
                 "yellow",
@@ -272,7 +273,6 @@ public class DisplayController extends AbstractController
                 "olive",
                 "lime",
                 "purple",
-                "fuschia",
                 "aqua",
                 "gray"
         };
