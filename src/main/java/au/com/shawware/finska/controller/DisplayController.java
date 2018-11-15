@@ -265,7 +265,6 @@ public class DisplayController extends AbstractController
                 "black",
                 "green",
                 "brown",
-                "fuschia",
                 "orange",
                 "teal",
                 "yellow",
